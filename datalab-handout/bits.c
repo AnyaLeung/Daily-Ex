@@ -251,7 +251,7 @@ int tmin(void) {
  * logic left shift by (32-n) bits, logic right shift, judge whether same as b4
  */
 int fitsBits(int x, int n) {
-  return ;
+  return 2;
 }
 
 //!!
