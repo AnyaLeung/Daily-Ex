@@ -174,8 +174,9 @@ int getByte(int x, int n) {
  * 1111rrrr, r for real number
  */
 int logicalShift(int x, int n) {
-    int mask = ~(1<<31); 
-    return (mask>>(31+(~n+1))) & (x>>n);
+    int mask = ~(1 << 31); //0x7f ff ff ff
+    mask = ((mask >> n) << 1) + 1; 
+    return mask & (x >> n); 
 }
 
 /*
@@ -186,6 +187,39 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
+    int m1 = 0x11 | (0x11 << 8);
+    int m2 = m1 | (m1 << 16);
+    int m3 = 0xf | (0xf << 8);
+    int s = x & m2;
+    s += ((x >> 1) & m2);
+    s += ((x >> 2) & m2);
+    s += ((x >> 3) & m2);
+    s += (s >> 16);
+    s = (s & m3) + ((s >> 4) & m3);
+    return (s + (s >> 8)) & 0x3f;
+
+}
+/*
+    int count; 
+    int tmpMask1 = (0x55)|(0x55<<8); 
+    int mask1 = (tmpMask1)|(tmpMask1<<16); 
+    int tmpMask2 = (0x33)|(0x33<<8); 
+    int mask2 = (tmpMask2)|(tmpMask2<<16); 
+    int tmpMask3 = (0x0f)|(0x0f<<8); 
+    int mask3 = (tmpMask3)|(tmpMask3<<16); 
+    int mask4 = (0xff)|(0xff<<16); 
+    int mask5 = (0xff)|(0xff<<8); 
+    count = (x&mask1)+((x>>1)&mask1); 
+    count = (count&mask2)+((count>>2)&mask2); 
+    count = (count + (count >> 4)) & mask3; 
+    count = (count + (count >> 8)) & mask4; 
+    count = (count + (count >> 16)) & mask5; 
+    return count;
+}
+*/
+
+    
+/*
   int mask1 = 0x11111111;
   int sum = 0;
   sum += mask1 & x;
@@ -209,7 +243,7 @@ int bitCount(int x) {
   sum = (sum>>1)&mask6 + (sum&mask6);
 
   return sum;
-}
+*/
 
 /* 
  * bang - Compute !x without using !
@@ -251,7 +285,8 @@ int tmin(void) {
  * logic left shift by (32-n) bits, logic right shift, judge whether same as b4
  */
 int fitsBits(int x, int n) {
-  return 2;
+    int shiftNumber= 32 + (~n + 1);// 32 - n
+    return !(x^((x<<shiftNumber)>>shiftNumber));
 }
 
 //!!
@@ -288,9 +323,10 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  int result = x>>31;
-  return !!(result^0xffffff);
-}//alright~
+   return !((x >> 31) | (!x));
+ // int result = x>>31;
+ // return !!(result^0xffffffff);
+}
 
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
