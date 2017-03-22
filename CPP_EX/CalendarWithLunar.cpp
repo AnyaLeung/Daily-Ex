@@ -8,9 +8,8 @@ int GetDaysInEveryMonth(int year, int month, int day);
 int CalFirstDayOfYear(int year);
 void PrintMonthOfEveryLine(int a);
 void PrintSuToSa();
-void CalNextMonthFirstday(int *firstday, int *days);
 void CorePrint(int month, int year, int day, int first_day_of_year);
- 
+
 int main(void) {
     int year = 2017;
     int month = 1;
@@ -23,8 +22,8 @@ int main(void) {
     day = GetDaysInEveryMonth(year, month, day);
 
     int first_day_of_year = CalFirstDayOfYear(year);
-        CorePrint(month, year, day, first_day_of_year);
-        cout <<endl;
+    CorePrint(month, year, day, first_day_of_year);
+    cout << endl;
 
     return 0;
 }
@@ -95,6 +94,10 @@ void CorePrint(int month, int year, int day, int first_day_of_year) {
     int line[4] = {1, 4, 7, 10}; //starting month of this line
     int line_count = 0;
 
+    string lunar[31] = {"null","初一","初二","初三","初四","初五","初六","初七","初八","初九","初十" ,"十一","十二","十三","十四","十五","十六","十七" ,"十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九" ,"三十"} ;
+    int start_lunar[13] = {0, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14};
+    int days_lunar[13] = {0, 30, 29, 30, 30, 30, 29, 29, 30, 29, 30, 29, 30};
+
     for(int i=1; i<13; i++) {
         days[i] = GetDaysInEveryMonth(year, i, day); 
     } //cal how many days of every month, save into array
@@ -103,38 +106,74 @@ void CorePrint(int month, int year, int day, int first_day_of_year) {
     CalNextMonthFirstday(firstday, days); 
     //get the firstday su, mo..., save into array
     
+    /*
+    if(year==2017) {
+        CalNextMonthFirstday(firstday_lunar, days_lunar)    ;
+        for(int j=0; j<13; j++) {
+            cout << "firstday_lunar[" << j << "]:" << firstday_lunar[j] << endl;
+        }
+    }
+    */
+
     cout << "Calendar of " << year << "\n" << endl;
 
     while(line_count<4){ 
         PrintMonthOfEveryLine(line_count); 
         PrintSuToSa();
+
         for(int m=line[line_count]; m<line[line_count]+3; m++){
             for(int j=0; j<4*firstday[m]; j++) {
-                cout <<" "; //one fier whitespace
+                cout <<"*"; //one fier whitespace
             }
-
             for(; count[m]+firstday[m]-1<7; count[m]++) {
                 cout << setw(2) << count[m];
                 cout << "  ";
             } 
-
             cout << "\t";
         }
 
         cout << endl;
 
-        for(int m=line[line_count]; m<line[line_count]+3; m++){
-            for(; count[m]<15-firstday[m]; count[m]++) {
-                cout << setw(2) << count[m];
-                cout << "  ";
-            } 
-            cout << "\t";
+        if(!line_count){
+            if(year==2017) {
+                for(int pt=4; pt<11; pt++) {
+                    cout << lunar[pt];
+                }
+                cout << "\t";
+
+                for (int s=0; s<12; s++) {
+                    cout << " ";
+                }
+                for(int pt=5; pt<9; pt++) {
+                    cout << lunar[pt];
+                }
+                cout << "\t";
+
+                for (int s=0; s<12; s++) {
+                    cout <<" ";
+                }
+                for (int pt=4; pt<8; pt++) {
+                    cout << lunar[pt];
+                }
+
+                cout << endl;
+            }
+
+            //cout << lunar[start_lunar[1]] << lunar[start_lunar[1]];
+            for(int m=line[line_count]; m<line[line_count]+3; m++){
+                for(; count[m]<15-firstday[m]; count[m]++) {
+                    cout << setw(2) << count[m];
+                    cout << "  ";
+                } 
+                cout << "\t";
+            }
+
+            cout << endl;
         }
 
-        cout << endl;
 
-        for(int m=line[line_count]; m<line[line_count]+3; m++){
-            for(; count[m]<22-firstday[m]; count[m]++) {
+            for(int m=line[line_count]; m<line[line_count]+3; m++){
+                for(; count[m]<22-firstday[m]; count[m]++) {
                 cout << setw(2) << count[m];
                 cout << "  ";
             } 
