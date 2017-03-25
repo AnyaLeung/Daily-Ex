@@ -10,14 +10,13 @@ SELECT SUM(minutes) FROM todo_list;
 SELECT AVG(minutes) FROM todo_list;
 
 
-/* 
-MIN     	
-MAX     
-SUM    
-AVG   
-COUNT	    returns the total number of VALUES in a given COLUMN 
+MIN()
+MAX()
+SUM()
+AVG()   
+COUNT()	    returns the total number of VALUES in a given COLUMN 
 COUNT(*)	returns the number of ROWS in a TABLE 
-*
+
 
 /*
 round() 取整， 为5时机率分半

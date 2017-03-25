@@ -10,9 +10,9 @@ SELECT aisle, SUM(quantity) FROM groceries GROUP BY aisle;
 
 /*
 order of the former statement:
-first GROUP BY combine the rows BY aisle, 
+first GROUP BY combine the column BY aisle, 
 and then SUM UP in each group, 
-last show the aisle of the first place of the aisle.
+then show the aisle of the first place of the aisle.
 Since here is aisle , that's ok,
 but if SELECT name, u gonna troubled.
 */

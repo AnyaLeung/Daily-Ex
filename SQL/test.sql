@@ -81,5 +81,9 @@ SELECT AVG(grade)
 FROM students AS avg_grade;
 
 
---GROUP BY clause
+--GROUP BY clause, and HAVING
 --see before
+
+
+--join
+SELECT 
