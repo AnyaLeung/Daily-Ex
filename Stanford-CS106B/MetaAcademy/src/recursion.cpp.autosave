@@ -58,48 +58,34 @@ void serpinskii(GWindow& w, int leftX, int leftY, int size, int order) {
 /*
  * 涂地板...
  */
-/*
-int floodFill(GBufferedImage& image, int x, int y, int newColor) {
-    //if(x>image.getWidth()||y>image.getHeight());
-    //else {
-        image.setRGB(x, y, newColor);
-
-      floodFill(image, x+1, y, newColor);
-      floodFill(image, x, y+1, newColor);
-      floodFill(image, x-1, y, newColor);
-      floodFill(image, x, y-1, newColor);
-  //  }
-    return 0;
-}
-*/
 int floodFill(GBufferedImage& image, int x, int y, int newColor) {
     if (image.inBounds(x, y)){
-        return floodFillHelper(image, x, y, newColor, image.getRGB(x,y));
+        return Filler(image, x, y, newColor, image.getRGB(x,y));
     }
     return 0;
 }
 
-int floodFillHelper(GBufferedImage& image, int x, int y, int newColor, int originalColor) {
+int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor) {
     if (image.inBounds(x+1, y)) {
-        if (originalColor == image.getRGB(x + 1, y)) {
-            image.setRGB(x + 1, y, newColor);
-            floodFillHelper(image, x + 1, y, newColor, originalColor);
+        if (originalColor==image.getRGB(x + 1, y)) {
+            image.setRGB(x+1, y,newColor);
+            floodFillHelper(image, x+1, y, newColor, originalColor);
         }
     }
     if (image.inBounds(x, y+1)) {
-        if (originalColor == image.getRGB(x, y + 1)) {
+        if (originalColor==image.getRGB(x, y + 1)) {
             image.setRGB(x, y + 1, newColor);
             floodFillHelper(image, x, y + 1, newColor, originalColor);
         }
     }
     if (image.inBounds(x - 1, y)) {
-        if (originalColor == image.getRGB(x - 1, y)) {
+        if (originalColor==image.getRGB(x - 1, y)) {
             image.setRGB(x - 1, y, newColor);
             floodFillHelper(image, x - 1, y, newColor, originalColor);
         }
     }
     if (image.inBounds(x, y-1)) {
-        if (originalColor == image.getRGB(x, y - 1)) {
+        if (originalColor==image.getRGB(x, y - 1)) {
             image.setRGB(x, y - 1, newColor);
             floodFillHelper(image, x, y - 1, newColor, originalColor);
         }
