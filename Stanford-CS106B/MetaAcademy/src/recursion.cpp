@@ -12,7 +12,10 @@
 #include "tokenscanner.h"
 using namespace std;
 
-int floodFillHelper(GBufferedImage& image, int x, int y, int newColor, int originalColor);
+int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor);
+void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string> &Result);
+string gene(Map<string, Vector<string>>& grammar, string symbol, string& currentSentence);
+
 
 /*
  * 最大公分母 Greatest Common Denominator
@@ -39,9 +42,9 @@ void DrawTri(GWindow& w, int leftX, int leftY, int size) {
 }
 
 void serpinskii(GWindow& w, int leftX, int leftY, int size, int order) {
-    if (order == 0) {
+    if (order==0) {
         return;
-    } else if(order == 1) {
+    } else if(order==1) {
         w.drawLine(leftX, leftY, leftX+size, leftY);
         w.drawLine(leftX, leftY, leftX+size/2, leftY+((sqrt(3)*size)/2));
         w.drawLine(leftX+size, leftY, leftX+size/2, leftY+((sqrt(3)*size)/2));
@@ -58,64 +61,82 @@ void serpinskii(GWindow& w, int leftX, int leftY, int size, int order) {
 /*
  * 涂地板...
  */
-/*
-int floodFill(GBufferedImage& image, int x, int y, int newColor) {
-    //if(x>image.getWidth()||y>image.getHeight());
-    //else {
-        image.setRGB(x, y, newColor);
-
-      floodFill(image, x+1, y, newColor);
-      floodFill(image, x, y+1, newColor);
-      floodFill(image, x-1, y, newColor);
-      floodFill(image, x, y-1, newColor);
-  //  }
-    return 0;
-}
-*/
 int floodFill(GBufferedImage& image, int x, int y, int newColor) {
     if (image.inBounds(x, y)){
-        return floodFillHelper(image, x, y, newColor, image.getRGB(x,y));
+        return Filler(image, x, y, newColor, image.getRGB(x,y));
     }
     return 0;
 }
 
-int floodFillHelper(GBufferedImage& image, int x, int y, int newColor, int originalColor) {
-    if (image.inBounds(x+1, y)) {
-        if (originalColor == image.getRGB(x + 1, y)) {
+int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor) {
+        if(image.inBounds(x+1, y)&& originalColor==image.getRGB(x+1, y)) {
             image.setRGB(x + 1, y, newColor);
-            floodFillHelper(image, x + 1, y, newColor, originalColor);
+            Filler(image, x + 1, y, newColor, originalColor);
         }
-    }
-    if (image.inBounds(x, y+1)) {
-        if (originalColor == image.getRGB(x, y + 1)) {
+        if(originalColor==image.getRGB(x, y-1)&& image.inBounds(x, y+1)) {
             image.setRGB(x, y + 1, newColor);
-            floodFillHelper(image, x, y + 1, newColor, originalColor);
+            Filler(image, x, y + 1, newColor, originalColor);
         }
-    }
-    if (image.inBounds(x - 1, y)) {
-        if (originalColor == image.getRGB(x - 1, y)) {
+        if(originalColor==image.getRGB(x-1, y)&& image.inBounds(x-1, y)) {
             image.setRGB(x - 1, y, newColor);
-            floodFillHelper(image, x - 1, y, newColor, originalColor);
+            Filler(image, x - 1, y, newColor, originalColor);
         }
-    }
-    if (image.inBounds(x, y-1)) {
-        if (originalColor == image.getRGB(x, y - 1)) {
+        if(originalColor==image.getRGB(x, y-1)&& image.inBounds(x, y-1)) {
             image.setRGB(x, y - 1, newColor);
-            floodFillHelper(image, x, y - 1, newColor, originalColor);
+            Filler(image, x, y - 1, newColor, originalColor);
         }
-    }
     return 0;
 }
 
-
-
+/*
+ * generate curriculum
+*/
 void personalCurriculum(Map<string, Vector<string>> & prereqMap,string goal) {
-    // your code here
-    cout << "[recursion personal curriculum called]" << endl;
+    Set<string> Result;
+    GenerateCur(prereqMap, goal, Result);
+    cout << goal << endl;
 }
 
-string generate(Map<string, Vector<string> > & grammar, string symbol) {
-    // your code here
-    cout << "[recursion generate called]" << endl;
-    return "";
+void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string> &Result){
+    Vector<string> directConcept;
+    directConcept = prereqMap.get(goal);
+    for(string childConcept: directConcept) {
+        if(!Result.contains(childConcept)) {
+            Result.add(childConcept);
+            cout << childConcept << endl;
+            GenerateCur(prereqMap, childConcept, Result);
+        }
+        else break;
+    }
+}
+//class set
+//for(:)
+
+/*
+ *generate Q
+ */
+string generate(Map<string, Vector<string>>& grammar, string symbol) {
+    string currentSentence = "";
+    if (!grammar.containsKey(symbol)) {
+        return symbol;
+    }
+    return gene(grammar, symbol, currentSentence);
+}
+
+string gene(Map<string, Vector<string>>& grammar, string symbol, string& currentSentence) {
+    Vector<string> grammarRule = grammar.get(symbol);
+    int randNum = randomInteger(0, grammarRule.size()-1); //range 0~(size-1)
+    string rule = grammarRule.get(randNum);
+
+    TokenScanner scanner(rule);
+    string token;
+    while (scanner.hasMoreTokens()) {
+        token = scanner.nextToken();
+        if (!grammar.containsKey(token)) {
+            currentSentence += token + "";
+        } else {
+            gene(grammar, token, currentSentence);
+        }
+    }
+    return currentSentence;
 }

@@ -221,8 +221,8 @@ void demoExploration(GWindow &window) {
  * Function: Load Grammar
  * -------------------------
  * A helper function that takes in a file name and loads in
- * the corresponding grammar, returning it in 
- * Map<string, Vector<string> > form. This grammar loader is build 
+ * the corresponding grammar, returning it in
+ * Map<string, Vector<string> > form. This grammar loader is build
  * to be able to handle production rules that are multiple lines long.
  */
 Map<string, Vector<string>> loadGrammar(string fileName) {
@@ -258,8 +258,8 @@ Map<string, Vector<string>> loadGrammar(string fileName) {
  * Function: Generate Problem
  * -------------------------
  * A helper function that takes in a file name and loads in
- * the corresponding grammar, returning it in 
- * Map<string, Vector<string> > form. This grammar loader is build 
+ * the corresponding grammar, returning it in
+ * Map<string, Vector<string> > form. This grammar loader is build
  * to be able to handle production rules that are multiple lines long.
  */
 void generateProblem() {
