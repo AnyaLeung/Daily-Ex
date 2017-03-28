@@ -94,7 +94,6 @@ int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor)
 void personalCurriculum(Map<string, Vector<string>> & prereqMap,string goal) {
     Set<string> Result;
     GenerateCur(prereqMap, goal, Result);
-    cout << goal << endl;
 }
 
 void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string> &Result){
@@ -106,7 +105,7 @@ void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string
             cout << childConcept << endl;
             GenerateCur(prereqMap, childConcept, Result);
         }
-        else break;
+        else cout << goal << endl;
     }
 }
 //class set
@@ -125,8 +124,10 @@ string generate(Map<string, Vector<string>>& grammar, string symbol) {
 
 string gene(Map<string, Vector<string>>& grammar, string symbol, string& currentSentence) {
     Vector<string> grammarRule = grammar.get(symbol);
-    int randNum = randomInteger(0, grammarRule.size()-1); //range 0~(size-1)
+    //get rule  from the map for your current symbol
+    int randNum = randomInteger(0, grammarRule.size()-1); //range from 0 to (size-1)
     string rule = grammarRule.get(randNum);
+    //get a random rule from those rules
 
     TokenScanner scanner(rule);
     string token;
