@@ -134,6 +134,23 @@ void CorePrint(int month, int year, int day, int first_day_of_year) {
 
         cout << endl;
 
+        if(year==2017) {
+            for(int m=line[line_count]; m<line[line_count]+3; m++){
+                for(int j=0; j<4*firstday[m]; j++) {
+                    cout <<"*"; //one fier whitespace
+                }
+                for(; count[m]+firstday[m]-1<7; count[m]++) {
+                    if(m==1) cout << lunar[3+m];
+                    if(m==2) cout << lunar[4+m];
+                    if(m==3) cout << lunar[3+m];
+                cout << "\t";
+                } 
+
+
+                cout << endl;
+        }
+
+        /*
         if(!line_count){
             if(year==2017) {
                 for(int pt=4; pt<11; pt++) {
@@ -158,6 +175,7 @@ void CorePrint(int month, int year, int day, int first_day_of_year) {
 
                 cout << endl;
             }
+            */
 
             //cout << lunar[start_lunar[1]] << lunar[start_lunar[1]];
             for(int m=line[line_count]; m<line[line_count]+3; m++){
