@@ -15,7 +15,6 @@ using namespace std;
 int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor);
 void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string> &Result);
 string gene(Map<string, Vector<string>>& grammar, string symbol, string& currentSentence);
-int ChangeAndSum( GBufferedImage& image , int x ,int y , int newColor ,int old );
 
 
 /*
@@ -36,28 +35,25 @@ int gcd(int a, int b) {
  * Serpinskii 分形
  * write a func named () in meta.cpp
  */
-void serpinskii(GWindow &w, int leftX, int leftY, int size, int order) {
-    // your code here
-    cout << "[recursion serpinskii called]" << endl;
-    if (order == 1 ){
+void DrawTri(GWindow& w, int leftX, int leftY, int size) {
+    w.drawLine(leftX+size/2, leftY, leftX+size/4, leftY+((sqrt(3)*size)/4));
+    w.drawLine(leftX+size/2, leftY, leftX+3*size/4, leftY+((sqrt(3)*size)/4));
+    w.drawLine(leftX+size/4, leftY+((sqrt(3)*size)/4), leftX+size/2, leftY+((sqrt(3)*size)/4));
+}
 
-        w.drawLine(leftX,leftY,size+leftX,leftY) ;
-        w.drawLine(size+leftX,leftY,size / 2 + leftX , size*sqrt(3) /2+ leftY) ;
-        w.drawLine(size/2 +leftX,size*sqrt(3)/2+leftY,leftX,leftY) ;
-    }
+void serpinskii(GWindow& w, int leftX, int leftY, int size, int order) {
+    if (order==0) {
+        return;
+    } else if(order==1) {
+        w.drawLine(leftX, leftY, leftX+size, leftY);
+        w.drawLine(leftX, leftY, leftX+size/2, leftY+((sqrt(3)*size)/2));
+        w.drawLine(leftX+size, leftY, leftX+size/2, leftY+((sqrt(3)*size)/2));
+    } else {
+        DrawTri(w, leftX, leftY, size);
 
-    else if ( order <= 0 ){
-
-        throw ("wrong!") ;
-        return ;
-    }
-
-    else {
-
-        serpinskii (w , leftX - size/4 , leftY + size*sqrt(3)/4 ,size /2, order - 1 ) ;
-        serpinskii (w , leftX + size /4 , leftY - size*sqrt(3)/4 , size/2 , order - 1 ) ;
-        serpinskii (w,  leftX  + 3*size /8 , leftY + size/4 *sqrt(3), size /2 ,order - 1 ) ;
-
+        serpinskii(w, leftX, leftY, size/2, order-1);
+        serpinskii(w, leftX+size/2, leftY, size/2, order-1);
+        serpinskii(w, leftX+size/4, leftY+((sqrt(3)*size)/4), size/2, order-1);
     }
 }
 
@@ -66,26 +62,30 @@ void serpinskii(GWindow &w, int leftX, int leftY, int size, int order) {
  * 涂地板...
  */
 int floodFill(GBufferedImage& image, int x, int y, int newColor) {
-    // your code here
-    int old = 0;
-    old = image.getRGB(x,y) ;
-    if ( newColor == old ) {
-        return 0;
+    if (image.inBounds(x, y)){
+        return Filler(image, x, y, newColor, image.getRGB(x,y));
     }
-
-    else
-        return ChangeAndSum(image , x, y , newColor , old ) ;
+    return 0;
 }
 
-int ChangeAndSum( GBufferedImage& image , int x ,int y , int newColor ,int old ) {
-
-    if ( image.inBounds(x,y) && image.getRGB(x,y)==old) {
-
-        image.setRGB( x , y , newColor );
-        return 1 + ChangeAndSum(image,x,y+1,newColor,old) + ChangeAndSum(image,x,y-1,newColor,old) + ChangeAndSum(image,x+1,y,newColor,old) + ChangeAndSum(image,x-1,y,newColor,old) ;
-    }
-
-    else return 0 ;
+int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor) {
+        if(image.inBounds(x+1, y)&& originalColor==image.getRGB(x+1, y)) {
+            image.setRGB(x + 1, y, newColor);
+            Filler(image, x + 1, y, newColor, originalColor);
+        }
+        if(originalColor==image.getRGB(x, y-1)&& image.inBounds(x, y+1)) {
+            image.setRGB(x, y + 1, newColor);
+            Filler(image, x, y + 1, newColor, originalColor);
+        }
+        if(originalColor==image.getRGB(x-1, y)&& image.inBounds(x-1, y)) {
+            image.setRGB(x - 1, y, newColor);
+            Filler(image, x - 1, y, newColor, originalColor);
+        }
+        if(originalColor==image.getRGB(x, y-1)&& image.inBounds(x, y-1)) {
+            image.setRGB(x, y - 1, newColor);
+            Filler(image, x, y - 1, newColor, originalColor);
+        }
+    return 0;
 }
 
 /*
@@ -94,6 +94,7 @@ int ChangeAndSum( GBufferedImage& image , int x ,int y , int newColor ,int old )
 void personalCurriculum(Map<string, Vector<string>> & prereqMap,string goal) {
     Set<string> Result;
     GenerateCur(prereqMap, goal, Result);
+    cout << goal << endl;
 }
 
 void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string> &Result){
@@ -105,7 +106,7 @@ void GenerateCur(Map<string, Vector<string>> & prereqMap,string goal, Set<string
             cout << childConcept << endl;
             GenerateCur(prereqMap, childConcept, Result);
         }
-        else cout << goal << endl;
+        else break;
     }
 }
 //class set
@@ -124,10 +125,8 @@ string generate(Map<string, Vector<string>>& grammar, string symbol) {
 
 string gene(Map<string, Vector<string>>& grammar, string symbol, string& currentSentence) {
     Vector<string> grammarRule = grammar.get(symbol);
-    //get rule  from the map for your current symbol
-    int randNum = randomInteger(0, grammarRule.size()-1); //range from 0 to (size-1)
+    int randNum = randomInteger(0, grammarRule.size()-1); //range 0~(size-1)
     string rule = grammarRule.get(randNum);
-    //get a random rule from those rules
 
     TokenScanner scanner(rule);
     string token;
