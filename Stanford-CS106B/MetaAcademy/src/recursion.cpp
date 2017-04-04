@@ -70,20 +70,20 @@ int floodFill(GBufferedImage& image, int x, int y, int newColor) {
 
 int Filler(GBufferedImage& image, int x, int y, int newColor, int originalColor) {
         if(image.inBounds(x+1, y)&& originalColor==image.getRGB(x+1, y)) {
-            image.setRGB(x + 1, y, newColor);
-            Filler(image, x + 1, y, newColor, originalColor);
+            image.setRGB(x+1, y, newColor);
+            Filler(image, x+1, y, newColor, originalColor);
         }
         if(originalColor==image.getRGB(x, y-1)&& image.inBounds(x, y+1)) {
-            image.setRGB(x, y + 1, newColor);
-            Filler(image, x, y + 1, newColor, originalColor);
+            image.setRGB(x, y+1, newColor);
+            Filler(image, x, y+1, newColor, originalColor);
         }
         if(originalColor==image.getRGB(x-1, y)&& image.inBounds(x-1, y)) {
-            image.setRGB(x - 1, y, newColor);
-            Filler(image, x - 1, y, newColor, originalColor);
+            image.setRGB(x-1, y, newColor);
+            Filler(image, x-1, y, newColor, originalColor);
         }
         if(originalColor==image.getRGB(x, y-1)&& image.inBounds(x, y-1)) {
-            image.setRGB(x, y - 1, newColor);
-            Filler(image, x, y - 1, newColor, originalColor);
+            image.setRGB(x, y-1, newColor);
+            Filler(image, x, y-1, newColor, originalColor);
         }
     return 0;
 }
