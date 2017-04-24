@@ -1,10 +1,5 @@
-PAT/a.out
-Stanford-CS106B/src/recursion1.cpp
-DS_Store
-*.pyc
-Stanford-CS106B/src/a.out
 a.out
-CPP_EX/a.out
-PAT/a.out 
-PAT/Startify
-PAT/readme.md
+*.pyc
+Startify
+._*
+.DS_Store*
