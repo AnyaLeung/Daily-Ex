@@ -23,7 +23,8 @@ void selection_sort(int a[], int total){
             tmp = a[max_index];      
             a[max_index] = a[i]; 
             a[i] = tmp; //when ends a line, exchage between a[max] and **a[i]**
-        }    }
+        } 
+    }
 }
 /*
  * basic thought:
