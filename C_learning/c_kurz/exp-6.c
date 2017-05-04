@@ -25,7 +25,7 @@ int main(void){
             }
         }
     } //bubble sort for arr_1
-  /*
+
     for(int s=0; s<9; s++){
         max_index = s;
         for(int l=s+1; s<10; l++){
@@ -37,7 +37,7 @@ int main(void){
             }
         }
     }
-   */
+
     
     for(int i=0; i<9; i++){
         k = i;
@@ -50,11 +50,12 @@ int main(void){
             }
         }
     } //为啥不行啊啊啊啊啊啊啊啊啊啊我的选择排序有毒啊啊啊啊啊
+
     int sort[20] = {0};
     int count1 = 0, count2 = 0;
     (arr_1[count1]>arr_1[count2])? sort[1] = arr_1[count1] count1++; : arr_2[count2]count2++;
     if(count1==9) put another allin;
     if(count2==9) put another allin;
-   
-       return 0;
+
+    return 0;
 }
