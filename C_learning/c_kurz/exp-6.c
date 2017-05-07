@@ -2,29 +2,32 @@
 
 void bubble_sort(int arr[], int total);
 void selection_sort(int a[], int total);
-void merge(int c[], int *nc, int a[], int na, int b[], int nb);
+void Merge(int a[], int b[], int sorted[], int alen, int blen);
+
 
 int main(void){
     int arr_1[10] = {0};
     int arr_2[10] = {0};
     int tmp1 = 0, tmp2 = 0;
+    int sorted[20] = {0};
     int max = 0;
-    int sorted[100] = {0};
-    int k = 0;
-    int *nc = 0;
     
     printf("enter first array: \n");
     for(int i=0; i<10; i++){
-        scanf("%d", &arr_1[i]);
+        scanf("%d ", &arr_1[i]);
     }
     printf("enter another array: \n");
     for(int i=0; i<10; i++){
-        scanf("%d", &arr_2[i]);
+        scanf("%d ", &arr_2[i]);
     }
     
     bubble_sort(arr_1, 10);
     selection_sort(arr_2, 10);
-    merge(sorted, nc, arr_1, 10, arr_2, 10);
+    Merge(arr_1, arr_2, sorted, 10, 10);
+
+    for(int j=0; j<20; j++){
+        printf("%d ", &sorted[j]);
+    }
 
     return 0;
 }
@@ -56,32 +59,17 @@ void selection_sort(int a[], int total){
     }
 }
 
-/*
-int merge(int sorted[],  int a[], int ano, int b[], int bno){
-    int a_count = 0, b_count = 0 , c_count = 0;
-    while(a_count<ano&& b_count<bno) 
-        a[a_count]>b[b_count]? sorted[c_count++]=a[a_count++]: sorted[c_count++]=b[b_count++];
+void Merge(int a[], int b[], int sorted[], int alen, int blen){
+    int i = 0, j = 0;
+    while(i<alen && j<blen){
+        sorted[i+j] = a[i]>b[j]? a[i++] : b[j++];
+    }
+    
+    while(i<alen){
+        sorted[i+j] = a[i++];
+    }
 
-    return c_count;
-}
-*/
-
-void merge(int c[], int *nc, int a[], int na, int b[], int nb){
-    int cursora, cursorb, cursorc;
-
-    cursora=cursorb=cursorc=0;
-
-    while((cursora<na)&&(cursorb<nb))
-        if (a[cursora]<=b[cursorb])
-            c[cursorc++]=a[cursora++];
-        else
-            c[cursorc++]=b[cursorb++];
-
-    while(cursora<na)
-        c[cursorc++]=a[cursora++];
-
-    while(cursorb<nb)
-        c[cursorc++]=b[cursorb++];
-
-    *nc = cursorc;
+    while(j<blen){
+        sorted[i+j] = b[j++];
+    }
 }
