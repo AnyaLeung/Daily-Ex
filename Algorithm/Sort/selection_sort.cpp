@@ -5,7 +5,7 @@ using namespace std;
 void selection_sort(int a[], int total);
 
 int main(void){
-    int a[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     selection_sort(a, 10);
     for(int i=0; i<10; i++){
         printf("%d", a[i]);
@@ -14,14 +14,14 @@ int main(void){
 }
 
 void selection_sort(int a[], int total){
-    int max_index = 0, tmp = 0;
+    int min_index = 0, tmp = 0;
     for(int i=0; i<total-1; i++){
-        max_index = i;
+        min_index = i;
         for(int j=i+1; j<total; j++){
-            if(a[max_index]>a[j]) max_index = j;
+            if(a[min_index]<a[j]) min_index = j;
 
-            tmp = a[max_index];      
-            a[max_index] = a[i]; 
+            tmp = a[min_index];      
+            a[min_index] = a[i]; 
             a[i] = tmp; //when ends a line, exchage between a[max] and **a[i]**
         } 
     }
