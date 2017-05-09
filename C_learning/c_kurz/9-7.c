@@ -22,7 +22,7 @@ int totsubstrnum(char *str, char *substr){
     lenb = strlen(substr);
 
     while(i<lena){
-        if(strncmp(str, substr, lenb)==0){
+        if(strncmp(str+i, substr, lenb)==0){
             count++;
             i += lenb;
         }
