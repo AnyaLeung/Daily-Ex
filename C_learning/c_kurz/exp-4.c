@@ -14,18 +14,18 @@ int main(void) {
     while(input_no<1000||input_no>9999) {
         printf("invalid input, enter your number again:");
         scanf("%d", &input_no);
-    } //error while out of range 1000-9999
+    } //不在范围内的时候报错
 
     while(input_no) {
         split[i] = input_no % 10;
         input_no /= 10;
         i++;
-    } //split input_no into bit
+    } //将该数字拆分成位，存在数组里
 
     printf("reverse number is: ");
     for(int i=0; i<4; i++) {
         printf("%d", split[i]);
-    } //print bit number reversely
+    } //反序打印数组里的数字
 
     printf("\n");
 
@@ -38,19 +38,19 @@ int main(void) {
                 split[n+1] = tmp;
             }
         }
-    } //bubble sort, small->large
+    } //冒泡排序，降序
 
     printf("the smallest number can produce is: ");
     for(int f=0; f<4; f++) {
         printf("%d", split[f]);
-    }
+    }//打印排序后的数组，从大到小，从而构建“最大数字”
 
     printf("\n");
 
     printf("the largest number can produce is: ");
     for(int p=3; p>=0; p--) {
         printf("%d", split[p]);
-    }
+    }//反序打印，构建最小数字
 
     printf("\n");
 
