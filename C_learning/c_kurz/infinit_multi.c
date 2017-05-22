@@ -12,9 +12,6 @@
  *
  *  cal from right to left
  */
-
-void multi(char *mulr, char *muld, int *product);
-
 int main(void) {
     char mulr[1000];
     char muld[1000];
@@ -46,12 +43,8 @@ int main(void) {
         carry[to_bit] = product[to_bit] / 10; //cal carry, save into array
         product[to_bit] -= carry[to_bit] * 10;
         product[to_bit-1] += carry[to_bit];
-//        if(to_bit==0&&carry[to_bit]!=0){ //total bit==0
- //           product[0] = carry[0];
-  //      }
     }
     
-   // if(last_num) printf("%d", last_num);
     for(int m=0; m<lena+lenb; m++) {
         printf("%d", product[m]);
     }
