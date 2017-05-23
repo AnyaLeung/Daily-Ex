@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 //word of palindrome
+//回文
 
 int judge(char str[]){
     char *start, *end;
