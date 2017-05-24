@@ -4,19 +4,14 @@
 char sub[100];
 
 void substr(char *s, int startloc, int len){
-    int i = startloc;
-    int j = 0;
-    char temp;
+    int i = 0;
     
-
-    for(; i<i+len; i++){
-        temp = *s;
-        sub[j] = temp;
-        j++;
-        s++;
+   // printf("%s", s);
+    for(i=0; i<len; i++){
+        sub[i] = s[startloc+i];
     }
-
-    sub[j] = '\0';
+    
+    sub[i] = '\0';
 }
 
 int main(void){
@@ -32,6 +27,7 @@ int main(void){
     scanf("%s", s);
     
     substr(s, startloc, len);
+    
     printf("sub: %s", sub);
     
     return 0;
