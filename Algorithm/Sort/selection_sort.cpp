@@ -14,16 +14,18 @@ int main(void){
 }
 
 void selection_sort(int a[], int total){
-    int min_index = 0, tmp = 0;
+    int max_index = 0, tmp = 0;
     for(int i=0; i<total-1; i++){
-        min_index = i;
+        max_index = i;
         for(int j=i+1; j<total; j++){
-            if(a[min_index]<a[j]) min_index = j;
+            if(a[max_index]<a[j]) max_index = j;
 
-            tmp = a[min_index];      
-            a[min_index] = a[i]; 
-            a[i] = tmp; //when ends a line, exchage between a[max] and **a[i]**
-        } 
+            tmp = a[max_index];      
+            a[max_index] = a[i]; 
+            a[i] = tmp; 
+            //when ends a line, exchage between a[max] and **a[i]**,
+            //杀鸡取卵。。。
+        }
     }
 }
 /*
