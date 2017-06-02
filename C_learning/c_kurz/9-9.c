@@ -52,7 +52,7 @@ int main(void){
 }
 
 void Judge(int lena, int lenb, char *a, char *b){ //判断减数和被减数的大小关系
-    char *tmp;
+    char tmp[1000];
     if(lena<lenb){
         sign = '-';
         strcpy(tmp, a);
