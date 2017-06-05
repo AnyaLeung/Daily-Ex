@@ -2,14 +2,12 @@
 
 int main(void){
     char str[100];
-    int i=0;
+    int i = 0, j = 0;
     int num[26] = {0};
-    int j=0;
 
     scanf("%s", str);
-
     for(i=0; i<100; i++){
-        if(str[i]>='a' && str[i]<='z'){
+        if(str[i]>='a'&&str[i]<='z'){
             num[str[i]-'a']++;
         }
     }
