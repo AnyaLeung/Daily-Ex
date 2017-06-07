@@ -14,9 +14,10 @@ int main(void){
     
     for(j=0; j<26; j++){
         if(num[j]){
-            printf("%c: %d\n", (char)(j+'a'), num[j]);
+            printf("%c=%d ", (char)(j+'a'), num[j]);
         }
     }
 
+    printf("\n");
     return 0;
 }
