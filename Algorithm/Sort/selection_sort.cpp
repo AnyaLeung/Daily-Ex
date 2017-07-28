@@ -14,24 +14,15 @@ int main(void){
 }
 
 void selection_sort(int a[], int total){
-    int max_index = 0, tmp = 0;
+    int max = 0, tmp = 0; //index
     for(int i=0; i<total-1; i++){
-        max_index = i;
+        max = i;
         for(int j=i+1; j<total; j++){
-            if(a[max_index]<a[j]) max_index = j;
-
-            tmp = a[max_index];      
-            a[max_index] = a[i]; 
-            a[i] = tmp; 
-            //when ends a line, exchage between a[max] and **a[i]**,
-            //杀鸡取卵。。。
+            if(a[j]>a[max]) max=j;
         }
+        //在这一趟最大的放最前面，exchange
+        tmp = a[max];
+        a[max] = a[i];
+        a[i] = tmp;
     }
 }
-/*
- * basic thought:
- * 把整个数组过很多遍，第一遍找出最大的和第一个换，第二遍找第二大的和第二个换…
- * 以此类推
- *
- * 第n趟结束的时候，把这一趟最大（小）的和第n个换
- */
