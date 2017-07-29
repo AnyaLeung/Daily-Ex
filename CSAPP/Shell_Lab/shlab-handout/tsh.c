@@ -165,6 +165,8 @@ int main(int argc, char **argv)
 */
 void eval(char *cmdline) 
 {
+    int argc;
+    
     return;
 }
 
@@ -504,6 +506,3 @@ void sigquit_handler(int sig)
     printf("Terminating after receipt of SIGQUIT signal\n");
     exit(1);
 }
-
-
-
