@@ -1,10 +1,13 @@
 strcmp(char *a, char *b)=0      -->相等
 strncmp(char *a, char *b, n)=0  -->前n位相等
+strlen(int *s)
+strcpy
+strncpy
 
 int main(int argc, char *argv[]){
 }
 
-*argv --> ./a.outk
+*argv --> ./a.out
 *(argv+1) --> 第一个参数
 
 

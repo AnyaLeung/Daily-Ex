@@ -5,7 +5,7 @@
 int lengthOfLongestSubstring(char* s) {
     char *p;
     int count = 0;
-    int record[27];
+    int record[27] = {0};
 
     p = s;
     while(*p!='\0'&& record[*p-'a']==0){
