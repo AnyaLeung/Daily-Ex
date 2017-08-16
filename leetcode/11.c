@@ -34,5 +34,4 @@ int maxArea(int* height, int heightSize) {
 // 
 // 时间复杂度：O(n)
 //
-// 然后对于时间复杂度理解的网址：
-// （一会再补吧，网好烂。。
+// 然后[对于时间复杂度的另一种理解](https://leetcode.com/problems/container-with-most-water/discuss/)
