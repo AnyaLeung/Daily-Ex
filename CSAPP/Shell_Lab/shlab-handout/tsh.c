@@ -233,7 +233,7 @@ int parseline(const char *cmdline, char **argv)
  */
 int builtin_cmd(char **argv) 
 {
-    if(!strcmp(argv[0]), "quit"){
+    if(!strcmp(argv[0], "quit")){
         exit(0);
     } //quit
 
@@ -254,8 +254,25 @@ int builtin_cmd(char **argv)
  */
 void do_bgfg(char **argv) 
 {
-
-    return;
+    char *id = argv[1];  
+    struct job_t *job;  
+    int jid;  
+    if(id[0] == '%')  
+        jid = atoi(id+1);  
+    if((job = getjobjid(jobs, jobid)) == NULL){  
+        printf("Job is not exist.\n");  
+        return;  
+    }  
+    if(!strcmp(argv[0], "bg")){  
+        job->state = BG;  
+        kill(-1* job->pid, SIGCONT);  
+    }  
+    if(!strcmp(argv[0], "fg")){  
+        job->state = FG;  
+        kill(-1 * job->pid, SIGCONT);  
+        waitfg(job->pid);  
+    }  
+    return;  
 }
 
 /* 
@@ -263,6 +280,7 @@ void do_bgfg(char **argv)
  */
 void waitfg(pid_t pid)
 {
+    while(pid==fgpid(jobs));
     return;
 }
 
