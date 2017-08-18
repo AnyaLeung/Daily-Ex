@@ -1,15 +1,14 @@
-def binary_search(list, des): #item for aiming
-    high = len(list) - 1
+def binary_search(list, aim):
     low = 0
-    mitten = (high + low) / 2
-    count = 0
+    high = len(list) - 1
 
-    while  list[mitten] != des:
-        if list[mitten] > des:
-            high = mitten - 1
-
-        if list[mitten] < des:
-            low = mitten + 1
-        mitten = (high + low ) / 2
-
-    return mitten 
+    while low <= high:
+        mid = (low + high) / 2
+        guess = list[mid]
+        if guess == aim:
+            return mid
+        if guess < aim:
+            low = mid + 1
+        if guess > aim:
+            high = mid - 1
+    return None
