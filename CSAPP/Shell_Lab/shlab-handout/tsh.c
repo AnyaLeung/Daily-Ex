@@ -348,12 +348,29 @@ void waitfg(pid_t pid)
  */
 void sigchld_handler(int sig) 
 {
-    pid_t pid;
-    if(pid = fork())
-    waitfg();
-    signal(-pid, )
-    return;
-}
+    int status;  
+    pid_t pid;  
+
+    // Waiting for handling all of the child processes according to their status
+    while ((pid=waitpid(fgpid(jobs), &status, WNOHANG|WUNTRACED))>0) {  
+        //立即返回，如果有一个终止，返回子进程pid
+        if(WIFSTOPPED(status)){    //stopped now
+            getjobpid(jobs, pid)->state = ST;
+            printf("%d stopped %s\n", pid2jid(pid), jobs->cmdline);
+        }  
+
+        else if(WIFSIGNALED(status)){  //is terminated present
+            printf("Job %d (%d) terminated by signal %d\n", pid2jid(pid), pid, WTERMSIG(status)); 
+            deletejob(jobs,pid);
+        }  
+
+        else if(WIFEXITED(status)){ //child process terminated by exit / return normally
+            deletejob(jobs, pid);  
+        }  
+    }  
+
+    return; 
+} //没太懂这个。。。？
 
 /* 
  * sigint_handler - The kernel sends a SIGINT to the shell whenver the
