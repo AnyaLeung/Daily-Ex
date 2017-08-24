@@ -30,8 +30,8 @@ parents["fin"] = None
 
 processed = [] #record used node
 
-def find_smallest_node(costs):
-    lowest_cost = float("inf")
+def find_lowest_cost(costs):
+    lowest_cost = float("inf") #infinit
     lowest_cost_node = None
     for node in costs:
         cost = costs[node]
@@ -42,7 +42,7 @@ def find_smallest_node(costs):
 # return index
 
 def dijikstra(graph, costs, parents, processed):
-    node = find_smallest_node(costs)
+    node = find_lowest_cost(costs)
 
     while not node == None:
         cost = costs[node]
@@ -52,9 +52,30 @@ def dijikstra(graph, costs, parents, processed):
             new_cost = cost + neighbors[i]
             if new_cost < costs[i]: #if smaller than present
                 costs[i] = new_cost #replace the value #wrong
-                parents[i] = node #record parent
+                parents[i] = node 
+                #record parent, child-->key, parent-->value
         processed.append(node)
-        node = find_smallest_node(costs) 
-            
+        node = find_lowest_cost(costs) 
+
+
+# write by me ww
+track = []
+def track_back_parent(parents):
+
+    pre_node = "fin"
+
+    while not pre_node == "start":
+        print("ok")
+        track.append(pre_node)
+        print(pre_node)
+        pre_node = parents[pre_node]
+    track.append("start")
+    track.reverse()
+# write by me ww
+
+
 dijikstra(graph, costs, parents, processed)
+track_back_parent(parents)
+
+print(track)
 print(costs["fin"])
