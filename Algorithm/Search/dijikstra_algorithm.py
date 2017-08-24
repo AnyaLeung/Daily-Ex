@@ -1,3 +1,11 @@
+# rewrite dijikstra funck
+# **AND find_lowest_cost func**
+#
+# three dict must refer to ALL NODES!!!
+# haven't got --> write as None / {} / infinity
+
+infinity = float("inf") #infinite
+
 graph = {}
 
 graph["start"] = {}
@@ -13,25 +21,29 @@ graph["b"] = {}
 graph["b"]["a"] = 3
 graph["b"]["fin"] = 5
 
-graph["fin"] = {} #end have no neighbor
+graph["fin"] = {} 
+#must write !!! (but y..?
 
-infinity = float("inf") #for infinit
+
 costs = {}
 costs["a"] = 6
 costs["b"] = 2
 costs["fin"] = infinity
 # record the costs, that is, how much costs from start to this node
+# haven't got-->infinity
+# MUST CONTAINS ALL NODES
 
 parents = {}
 parents["a"] = "start"
 parents["b"] = "start"
 parents["fin"] = None
 # record parent node
+# MUST CONTAINS ALL NODES
 
 processed = [] #record used node
 
 def find_lowest_cost(costs):
-    lowest_cost = float("inf") #infinit
+    lowest_cost = float("inf") #infinity
     lowest_cost_node = None
     for node in costs:
         cost = costs[node]
@@ -65,9 +77,7 @@ def track_back_parent(parents):
     pre_node = "fin"
 
     while not pre_node == "start":
-        print("ok")
         track.append(pre_node)
-        print(pre_node)
         pre_node = parents[pre_node]
     track.append("start")
     track.reverse()
