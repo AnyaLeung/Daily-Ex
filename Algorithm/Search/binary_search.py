@@ -12,3 +12,5 @@ def binary_search(list, aim):
         if guess > aim:
             high = mid - 1
     return None
+
+# 能搜索所有的元素，包括头尾
