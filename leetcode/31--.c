@@ -15,10 +15,11 @@ void BubbleSort(int* arr, int n)
 }
 
 void nextPermutation(int* nums, int numsSize) {
-	if(numsSize == 1) return;
+	//if(numsSize == 1) return;
+    
     for (int x = numsSize - 1; x > 0; --x)
     {
-    	if(nums[x] > nums[x-1]){
+    	if(nums[x] > nums[x-1]){ //if right is bigger than left
     		int head = nums[x-1];
     		//printf("%d\n", nums[x]);
     		BubbleSort(&nums[x],numsSize - x);
