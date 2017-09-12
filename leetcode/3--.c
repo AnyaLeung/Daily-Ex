@@ -1,22 +1,30 @@
+//Given a string, 
+//find the length of the longest substring 
+//without repeating characters.
+
 bool check(char cr, char* copy) {
-    char* p = copy;
-    int len = strlen(copy);
+    char* p;
 
     p = (char *)malloc(len * sizeof(char));
+    p = copy;
+
     while(*p!='\0') {
-        if()
+        if(*p==cr) return false;
+        else p++;
     }
+    return true;
 }
 
 int lengthOfLongestSubstring(char* s) {
-    char* res;
-    char *p;
-    int i = 0, j = 0;
-    p = s;
+    char* tmp;
+    int res = 0;
     int len = strlen(s);
 
-    res = (char *) malloc(len * sizeof(char));
+    tmp = (char *) malloc(len * sizeof(s));
+    tmp = s;
+
     while(*p!='\0') {
+        if()
         if(check(p[i], res)) {
             res[j++] = p[i];
         }
@@ -24,4 +32,3 @@ int lengthOfLongestSubstring(char* s) {
     }
     return res;
 }
-
