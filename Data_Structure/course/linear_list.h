@@ -53,5 +53,14 @@ void NextElem(L, cur_e, &next_e) {
 }
 
 void ListInsert(&L, i, e) {
+           
+    L.length += 1;
+} //在L的第i个元素前插入e，length+1
 
-}
+void ListDelete(&L, i, &e) {
+
+} //删除第i个元素，并用e返回其值，length-1
+
+void ListTraverse(L) {
+
+} //依次输出L的每个数据元素
