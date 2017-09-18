@@ -10,7 +10,9 @@ public:
            sum = sum * 10 +  x % 10;
            x /= 10;
         }
-        if(sum==tmp) return true;
-        return false;
+
+        return sum==tmp;
+        //if(sum==tmp) return true;
+        //return false;
     }
 };
