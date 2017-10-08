@@ -19,16 +19,15 @@ int lengthOfLongestSubstring(char* s) {
     char* tmp;
     int res = 0;
     int len = strlen(s);
+    int slen1 = 0;
+    int slen2 = 0;
 
     tmp = (char *) malloc(len * sizeof(s));
     tmp = s;
 
     while(*p!='\0') {
-        if()
-        if(check(p[i], res)) {
-            res[j++] = p[i];
-        }
-        p++;
+        
     }
+
     return res;
 }
