@@ -20,20 +20,51 @@ bool Whether_in(Student stu, string name) {
     return 0;
 }
 
-string Delete_ele(Student &L, int i, string &e) {
-     e = L.elem[i];
+string Delete_ele(Student &L, int i) {
+     string e = L.elem[i];
      for(int j=i; j<L.pre_no; j++) {
-          L.elem[j] = L.elem
+          L.elem[j] = L.elem;
      }
-     
+     return e;
 }//delete element with index i
 
-Student* Intersaction(Student stu1, Student stu2) {
-    for(int i=0; i<stu1.pre_no+stu2.pre_no; i++) {
-        
-    }
-    return ;
+Insert(Student &L, string e) {
 }
+
+
+void Union(Student &stu1, Student stu2) {
+    string tmp;
+    int i = 0;
+
+    while(!stu2.pre_no) {
+        tmp = Delete_ele(stu2, i++);
+        if(Whether_in(stu1, tmp)) ;
+        else Insert(stu1, tmp);
+    }
+}
+
+void Diff_set(Student &stu1, Student stu2) { //stu1 - stu2
+   string tmp;
+   int i = 0;
+
+   while(!stu2.pre_no) {
+       tmp = Delete_ele(stu2, i);
+       if(!Whether_in(stu1, tmp)) ;
+       else {
+            Delete_ele(stu1, i++);
+       }
+   }
+}
+
+void Intersaction(Student &stu1, Student &stu2) {
+    string tmp;
+    int i = 0;
+    int sum = (stu2.pre_no > stu1.pre_no)? stu2.pre_no : stu1.pre_no;
+    
+    while(!stu2.pre_no && !stu1.pre_no) {
+       tmp = Delete_ele(stu1, ) 
+    }
+} //???
 
 int main(void){
     
