@@ -12,8 +12,8 @@ typedef struct{
 } Student;
 
 void Init(Student &L, int maxsize, int incresize) {
-    L.elem = new ElemType[maxsize];
-    L.length = maxsize;
+    L.elem = new string[maxsize];
+    L.max_size = maxsize;
     L.incrementsize = incresize;
 }
 
@@ -29,25 +29,18 @@ bool Whether_in(Student stu, string name) {
 }
 
 void ListTraverse(Student L) {
-    for(int i=0; i<L.length; i++) {
-        std::cout << L.elem[i] << " ";
+    for(int i=0; i<L.pre_no; i++) {
+        cout << L.elem[i] << " ";
     }
 } //依次输出L的每个数据元素
 
 string Delete_ele(Student &L, int i) {
      string e = L.elem[i];
      for(int j=i; j<L.pre_no; j++) {
-         L.elem[j] = L.elem;
+         L.elem[j] = L.elem[j+1];
      }
      return e;
 }//delete element with index i
-
-void Insert(Student &L, string e) {
-    if(L.pre_no<L.max_size) { //already full
-        increment(L);
-    }
-    L.elem[pre_no++] = e;
-}
 
 void Increment(Student &L) {
     string *a;
@@ -60,6 +53,13 @@ void Increment(Student &L) {
 
     delete[] L.elem; //free arr
     L.elem = a; 
+}
+
+void Insert(Student &L, string e) {
+    if(L.pre_no<L.max_size) { //already full
+        increment(L);
+    }
+    L.elem[L.pre_no++] = e;
 }
 
 void Union(Student &stu1, Student stu2) {
