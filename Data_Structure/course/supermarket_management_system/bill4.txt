@@ -1,0 +1,6 @@
+goods      amount
+盘锦大米       1
+六神花露水     1
+
+trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points
+10222     2           2   2017-10-22 0    0       49.8    10000  187

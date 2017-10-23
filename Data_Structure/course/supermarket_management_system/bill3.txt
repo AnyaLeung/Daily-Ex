@@ -1,0 +1,11 @@
+goods      amount
+统一老坛酸菜面 1
+盘锦大米       1
+南孚电池       1
+六神花露水     1
+郫县豆瓣酱     1
+洁丽雅毛巾     1
+娃哈哈八宝粥   1
+
+trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points
+10221     1           1   2017-10-22 0    0       81.6    10001  81.6
