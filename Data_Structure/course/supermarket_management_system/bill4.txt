@@ -1,5 +1,5 @@
 goods      amount
-盘锦大米       1
+东北盘锦大米       1
 六神花露水     1
 
 trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points

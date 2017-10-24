@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//struct declaration
 typedef struct
 {
     string name;
@@ -44,7 +45,27 @@ typedef struct
     int alipay; //0-->with cash, else with alipay
     int VIP_no; //0-->nicht VIP, else is VIP
     int VIP_points; //0-->nicht, else is points
+
 } Bill;
+//struct declaration end
+
+
+//function prototype
+void Welcome(Supermarket su);
+void Init(Supermarket &S);
+void Init_good(Item &g1, string name, int iid, float price);
+void Read_bill();
+void Show_all_items(Supermarket su);
+void Load_goods(Supermarket &S);
+void Show_sale_today();
+void Search_item();
+void Show_VIP();
+void Show_today();
+void Add_new_bill();
+void Entrance(Supermarket su);
+void Is_good(string item_name);
+//function prototype end
+
 
 void Init(Supermarket &S)
 {
@@ -54,12 +75,28 @@ void Init(Supermarket &S)
 }
 //Init manage system
 
-void Init_good(Item g1, string name, int iid, float price)
+void Init_good(Item &g1, string name, int iid, float price)
 {
     g1.name = name;
     g1.iid = iid;
     g1.amount = 0;
     g1.price = price;
+}
+
+bool Is_good(string item_name, Supermarket su)
+{
+
+   for(int i=0; i<20; i++)    
+   {
+       if(item_name==su.list[i].name)
+       {
+           cout << "ok";
+           return true;
+       }
+   }
+    
+   return false;
+
 }
 
 void Read_bill()
@@ -98,32 +135,92 @@ void Read_bill()
     }
 }
 
-void Show_all_items()
-{ }; 
+void Show_all_items(Supermarket su)
+{
 
-void Load_goods(Supermarket S) 
+    system("clear");
+
+    char enter;
+    
+    cout << endl;
+    cout << endl;
+    cout << endl;
+
+    cout << "          ***********************************************************";
+    cout << endl;
+    cout << "                                所有商品及其销量 ";
+    cout << endl;
+    cout << "          ***********************************************************";
+    cout << endl;
+    cout << endl;
+
+    for(int i=0; i<20; i++)
+    {
+        cout << "name: ";
+        cout << su.list[i].name;
+        cout << "\t";
+
+        cout << "good id: ";
+        cout << su.list[i].iid;
+        cout << "\t";
+
+        cout << "total sale amount: ";
+        cout << su.list[i].amount;
+        cout << "\t";
+
+        cout << "good price: ";
+        cout << su.list[i].price;
+        cout << "\t";
+
+        cout << endl;
+
+    }
+        
+    cout << endl;
+    cout << "Press [b] to back to main page";
+    cout << endl;
+    
+    cin >> enter;
+
+    if(enter=='b') 
+    {
+        Entrance(su);
+    }
+
+    else
+    {
+        cout << "Wrong input! Enter again";
+        cout << endl;
+
+        cin >> enter;
+    }
+
+}
+
+
+void Load_goods(Supermarket &S) 
 {
 
     Init_good(S.list[0], "维达手帕纸十包装", 1, 6);
     Init_good(S.list[1], "莫斯利安甜橙味", 2, 10.5);
     Init_good(S.list[2], "百岁山矿泉水", 3, 4);
-    Init_good(S.list[3], "爱尚虾条", 4, 1.8);
+    Init_good(S.list[3], "爱尚大包虾条", 4, 1.8);
     Init_good(S.list[4], "娃哈哈AD钙奶", 5, 2.5);
-    Init_good(S.list[5], "乐事薯片", 6, 4.5);
-    Init_good(S.list[6], "卫龙辣条", 7, 3);
+    Init_good(S.list[5], "乐事原味薯片", 6, 4.5);
+    Init_good(S.list[6], "卫龙辣条袋装", 7, 3);
     Init_good(S.list[7], "统一老坛酸菜面", 8, 4.9);
     Init_good(S.list[8], "娃哈哈八宝粥", 9, 5);
-    Init_good(S.list[9], "中性笔", 10, 2);
+    Init_good(S.list[9], "黑色中性水笔", 10, 2);
     Init_good(S.list[10], "蓝月亮洗衣液", 11, 15);
     Init_good(S.list[11], "洁丽雅毛巾", 12, 7.5);
-    Init_good(S.list[12], "南孚电池", 13, 2.5);
+    Init_good(S.list[12], "南孚电池一节", 13, 2.5);
     Init_good(S.list[13], "六神花露水", 14, 9.9);
     Init_good(S.list[14], "不二家棒棒糖", 15, 2);
     Init_good(S.list[15], "思念灌汤水饺三鲜", 16, 8.5);
     Init_good(S.list[16], "郫县豆瓣酱", 17, 11.9);
     Init_good(S.list[17], "奥妙洗衣液", 18, 22.8);
     Init_good(S.list[18], "天堂晴雨伞", 19, 49);
-    Init_good(S.list[19], "盘锦大米", 20, 39.9);
+    Init_good(S.list[19], "东北盘锦大米", 20, 39.9);
         
 }
 
@@ -133,9 +230,12 @@ void Show_VIP(){};
 void Show_today(){};
 void Add_new_bill(){};
 
-/*
-void Entrance()
+
+void Entrance(Supermarket su)
 {
+
+    system("clear");
+
     char enter;
     
     cout << endl;
@@ -181,7 +281,7 @@ void Entrance()
     
     if(enter=='a')
     {
-        Show_all_items();
+        Add_new_bill();
     }
     
     if(enter=='b')
@@ -206,18 +306,19 @@ void Entrance()
     
     if(enter=='f')
     {
-        Add_new_bill();
+        Show_all_items(su);
+
     }
     
 }
-*/
 
-void Welcome()
+
+void Welcome(Supermarket su)
 {
+
     string name;
     string pwd;
 
-    /*
      cout << "enter ur name here: ";
      cin >> name;
      cout << "Hello, " << name << ", welcome :)";
@@ -234,14 +335,11 @@ void Welcome()
      cout << endl;
      cout << "Now you can enter management system.";
      cout << endl;
-     
+
      sleep(2);
-     system("clear");
 
-    Entrance();
-     */
+     Entrance(su);
 }
-
 
 
 int main(void)
@@ -250,7 +348,9 @@ int main(void)
     Init(su1);
     Load_goods(su1);
 
-    Welcome();
+//    Welcome(su1);
+    int res = Is_good("东北盘锦大米 ", su1);
+    cout << res;
     
     
     return 0;

@@ -1,9 +1,9 @@
 goods      amount
-爱尚虾条 1
-乐事薯片 2
-卫龙辣条 1
+爱尚大包虾条 1
+乐事原味薯片 2
+卫龙辣条袋装 1
 蓝月亮洗衣液 1
-中性笔 5
+黑色中性水笔 5
 
 trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points
 10211     1           1   2017-10-21 50   11.2      0     10000  138
