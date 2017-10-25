@@ -2,5 +2,12 @@ goods      amount
 维达手帕纸十包装 1
 百岁山矿泉水 1
 
-trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points
-10212     2           2   2017-10-21 0    0       10      0      0
+trade_id 10212
+cashier_id 2
+mid 2
+time 171021
+paid 0
+change 0 
+alipay 10
+VIP_no 0 
+VIP_points 0

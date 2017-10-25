@@ -7,5 +7,12 @@ goods      amount
 洁丽雅毛巾     1
 娃哈哈八宝粥   1
 
-trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points
-10221     1           1   2017-10-22 0    0       81.6    10001  81.6
+trade_id 10221
+cashier_id 1
+mid 1
+time 171022
+paid 0 
+change 0 
+alipay 82
+VIP_no 10001
+VIP_points 82

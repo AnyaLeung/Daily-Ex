@@ -16,17 +16,23 @@ bool check(char cr, char* copy) {
 }
 
 int lengthOfLongestSubstring(char* s) {
-    char* tmp;
-    int res = 0;
+    char* tmp[2];
+    char* p;
     int len = strlen(s);
-    int slen1 = 0;
-    int slen2 = 0;
+    int slen[2] = 0;
 
-    tmp = (char *) malloc(len * sizeof(s));
-    tmp = s;
-
+    tmp[1] = new char[len];
+    tmp[2] = new char[len];
+    p = new char[len];
+    
+    p = s;
     while(*p!='\0') {
-        
+        if(check(*p, tmp[1])) {
+            tmp[1] += *p;
+        }
+        else {
+            tmp[2] += *p;
+        }
     }
 
     return res;

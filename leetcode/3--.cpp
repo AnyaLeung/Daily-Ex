@@ -1,7 +1,7 @@
 class Solution {
     public:
         bool check(char cr, string copy) {
-            char* p;
+            char *p;
 
             p = new char[copy.size()]
             p = copy;
@@ -14,20 +14,20 @@ class Solution {
         }
 
         int lengthOfLongestSubstring(string s) {
-            char* p;
+            char *p;
+            int count = 0;
+
             if(s.size()==1) return 1;
+
             p = new char[s.size];
             p = s;
 
-            string s1;
-            string s2;
-            
             while(*p) {
-                
+                if(check(*p, s)) {
+                    count ++;
+                    p++;
+                }
             }
-            p = s;
-            while(p) {
-                if(check(*p, ))
-            }
+
         }
 };

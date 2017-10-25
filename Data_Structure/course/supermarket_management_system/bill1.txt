@@ -5,5 +5,12 @@ goods      amount
 蓝月亮洗衣液 1
 黑色中性水笔 5
 
-trade_id  cashier_id  mid  time      paid change  alipay  VIP_no VIP_points
-10211     1           1   2017-10-21 50   11.2      0     10000  138
+trade_id 10211
+cashier_id 1
+mid 1
+time    171021  
+paid 50
+change 12
+alipay 0 
+VIP_no 10000
+VIP_points 138
