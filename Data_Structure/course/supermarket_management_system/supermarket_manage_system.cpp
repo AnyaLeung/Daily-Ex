@@ -514,19 +514,19 @@ void Show_all_items(Supermarket su)
     
     for(int i=0; i<20; i++)
     {
-        cout << "name: ";
+        cout << " name: ";
         cout << su.list[i].name;
         cout << "\t";
         
-        cout << "good id: ";
+        cout << " good id: ";
         cout << su.list[i].iid;
         cout << "\t";
         
-        cout << "total sale amount: ";
+        cout << " total sale amount: ";
         cout << su.list[i].amount;
         cout << "\t";
         
-        cout << "good price: ";
+        cout << " good price: ";
         cout << su.list[i].price;
         cout << "\t";
         
