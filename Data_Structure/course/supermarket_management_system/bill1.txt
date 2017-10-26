@@ -4,6 +4,7 @@ goods      amount
 卫龙辣条袋装 1
 蓝月亮洗衣液 1
 黑色中性水笔 5
+百岁山矿泉水 1
 
 trade_id 10211
 cashier_id 1

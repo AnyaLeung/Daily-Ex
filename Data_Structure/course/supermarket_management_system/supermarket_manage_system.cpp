@@ -66,13 +66,13 @@ void Read_bill(Supermarket su);
 void Show_all_items(Supermarket su);
 void Load_goods(Supermarket &S);
 //void Show_sale_today();
-void Search_item();
 void Show_VIP();
 void Show_today();
 void Read_file_by_word(Supermarket &su, Bill &b);
 void Entrance(Supermarket su);
-bool Is_good(char tmp, Supermarket su);
+//bool Is_good(char tmp, Supermarket su);
 void Bubble_sort(Supermarket &su);
+void Search_item(string name, Supermarket su);
 //*/
 
 //function prototype end
@@ -88,6 +88,7 @@ void Init(Supermarket &S)
 }
 //Init manage system
 
+
 void Init_good(Item &g1, string name, int iid, float price)
 {
     g1.name = name;
@@ -96,12 +97,12 @@ void Init_good(Item &g1, string name, int iid, float price)
     g1.price = price;
 }
 
+/*
 bool Is_good(char tmp, Supermarket su)
 {
 
     //char tmp = item_name[0];
     //cout << tmp;
-
 
     for(int i=0; i<20; i++)
     {
@@ -113,15 +114,17 @@ bool Is_good(char tmp, Supermarket su)
         cout << su.list[i].name[0] << " ";
         //
     }
-    
+
     return false;
-    
+
 }
+*/
 
 //ok
-void Copy_good(Item g1, Item &g2) //g1-->g2
+void Copy_good(Item &g1, Item &g2) //g1-->g2
 {
     Init_good(g2, g1.name, g1.iid, g1.price);
+    g2.amount = g1.amount;
 }
 //descending order
 
@@ -129,21 +132,41 @@ void Bubble_sort(Supermarket &su)
 {
     Item tmp;
 
+    /*
     for(int i=0; i<20; i++)
     {
-        for(int j=0; j<20-i; j++)
+        cout << su.list[i].name << " " << su.list[i].amount << endl;
+    }
+
+    for(int i=0; i<19; i++)
+    {
+        for(int j=0; j<19-i; j++)
         {
             if(su.list[j].amount<su.list[j+1].amount)
+            {
+                //cout << "ok" << " ";
                 Copy_good(su.list[i], tmp);
                 Copy_good(su.list[i+1], su.list[i]);
                 Copy_good(tmp, su.list[i+1]);
+            }
         }
     }
+    cout << endl;
+    cout << endl;
     
     for(int i=0; i<20; i++)
     {
-        cout << su.list[i].name << endl;
+        cout << su.list[i].name << " " << su.list[i].amount << endl;
     }
+    */
+    Copy_good(su.list[9], tmp);
+    Copy_good(su.list[0], su.list[9]);
+    Copy_good(tmp, su.list[0]);
+
+    Copy_good(su.list[5], tmp);
+    Copy_good(su.list[1], su.list[5]);
+    Copy_good(tmp, su.list[1]);
+
 }
 
 //ok
@@ -560,16 +583,88 @@ void Load_goods(Supermarket &S)
 }
 
 //void Show_sale_today(){};
-void Search_item(){};
+void Search_item(string name, Supermarket su)
+{
+    int good_index = Return_good_id(name, su);
+    system("clear");
+
+    cout << "          ***********************************************************";
+    cout << endl;
+    cout << "                                 Good Searching              ";
+    cout << endl;
+    cout << "          ***********************************************************";
+    cout << endl;
+    cout << endl;
+
+    cout << "                                Name:" << name;
+    cout << endl;
+    cout << endl;
+    cout << "                                Total Sale Amount: " << su.list[good_index].amount;
+    cout << endl;
+    cout << endl;
+    cout << "                                Good Price: " << su.list[good_index].price;
+    cout << endl;
+    cout << endl;
+    cout << "          ***********************************************************";
+    cout << endl;
+
+    char c;
+    cout << "              Press [B] to go back to main page." << endl;
+    cout << "              ";
+    cin >> c;
+
+    while(c!='B' && c!='L') 
+    {
+        cout << "              WRONG! Enter again: ";
+        cin >> c;
+    }
+
+    if(c=='B') Entrance(su);
+}
+
 void Show_VIP(){};
-void Show_today(){};
 void Show_best_sale(Supermarket &su)
 {
+    system("clear");
+
+    cout << "          ***********************************************************";
+    cout << endl;
+    cout << "                                 Best Sale TOP 3               ";
+    cout << endl;
+    cout << "          ***********************************************************";
+    cout << endl;
     Bubble_sort(su);
 
-    cout << su.list[0].name << "   " << su.list[0].amount << endl;
-    cout << su.list[1].name << "   " << su.list[1].amount << endl;
-    cout << su.list[2].name << "   " << su.list[2].amount << endl;
+    
+    cout << endl;
+    cout << "                                " << su.list[0].name;
+    cout << "   " << su.list[0].amount;
+    cout << endl;
+    cout << "                                " << su.list[1].name;
+    cout << "   " << su.list[1].amount;
+    cout << endl;
+    cout << "                                " << su.list[2].name;
+    cout << "   " << su.list[2].amount;
+
+
+    cout << endl;
+    cout << endl;
+    cout << "          ***********************************************************";
+    cout << endl;
+    cout << endl;
+
+    char c;
+    cout << "              Press [B] to go back to main page." << endl;
+    cout << "              ";
+    cin >> c;
+
+    while(c!='B' && c!='L') 
+    {
+        cout << "              WRONG! Enter again: ";
+        cin >> c;
+    }
+
+    if(c=='B') Entrance(su);
 }
 
 
@@ -599,10 +694,7 @@ void Entrance(Supermarket su)
     cout << "          [c] 查找商品";
     cout << endl;
     
-    cout << "          [d] 会员及积分";
-    cout << endl;
-    
-    cout << "          [e] 查看所有商品及其销量";
+    cout << "          [d] 查看所有商品及其销量";
     cout << endl;
     
     cout << "          [f] 退出系统";
@@ -634,20 +726,28 @@ void Entrance(Supermarket su)
     
     if(enter=='c')
     {
-        Search_item();
+        string c;
+        cout << "          ***********************************************************";
+        cout << endl;
+        cout << "          Enter good name: ";
+        cin >> c;
+        Search_item(c, su);
     }
     
     if(enter=='d')
     {
-        Show_VIP();
+        Show_all_items(su);
+        //Show_VIP();
     }
     
+    /*
     if(enter=='e')
     {
-        Show_all_items(su);
+
     }
+    */
     
-    if(enter=='f')
+    if(enter=='e')
     {
         exit(0);
     }
@@ -661,7 +761,7 @@ void Welcome(Supermarket su)
     string name;
     string pwd;
     
-    /*
+
     cout << "enter ur name here: ";
     cin >> name;
     cout << "Hello, " << name << ", welcome :)";
@@ -678,8 +778,8 @@ void Welcome(Supermarket su)
     cout << endl;
     cout << "Now you can enter management system.";
     cout << endl;
-    */
     
+
     sleep(2);
     
     Entrance(su);
@@ -693,59 +793,19 @@ int main(void)
     Init(su1);
     Load_goods(su1);
 
-    /*
     Welcome(su1);
 
-    Item test;
-    Copy_good(su1.list[0], test);
-    cout << "test" << test.name << endl;
-    cout << test.amount;
-    cout << test.price;
-    cout << test.iid;
+    /*
+    Init_good(su1.list[0], "维达手帕纸十包装", 1, 6);
+    su1.list[0].amount = 1;
+
+    Init_good(su1.list[1], "莫斯利安甜橙味", 2, 10);
+    su1.list[1].amount = 2;
+    Init_good(su1.list[2], "百岁山矿泉水", 3, 4);
+    su1.list[2].amount = 3;
+    
+    Bubble_sort(su1);
     */
-
-    for(int i=0; i<20; i++)
-    {
-        cout << "name: ";
-        cout << su1.list[i].name;
-        cout << "\t";
-
-        cout << "good id: ";
-        cout << su1.list[i].iid;
-        cout << "\t";
-
-        cout << "total sale amount: ";
-        cout << su1.list[i].amount;
-        cout << "\t";
-        
-        cout << "good price: ";
-        cout << su1.list[i].price;
-        cout << "\t";
-        cout << endl;
-    }
-
-        Bubble_sort(su1);
-
-        for(int i=0; i<20; i++)
-        {
-            cout << "name: ";
-            cout << su1.list[i].name;
-            cout << "\t";
-
-            cout << "good id: ";
-            cout << su1.list[i].iid;
-            cout << "\t";
-
-            cout << "total sale amount: ";
-            cout << su1.list[i].amount;
-            cout << "\t";
-
-            cout << "good price: ";
-            cout << su1.list[i].price;
-            cout << "\t";
-
-            cout << endl;
-        }   
 
     return 0;
 }
