@@ -14,24 +14,25 @@ public:
         bool carry = 0;
 
         dummy_head = new ListNode(0);
-        node = dummy_head;
         p = l1;
         q = l2;
+        node = dummy_head;
 
-        while(p || q){
-            int x = (p==NULL)? 0 : p->val;
-            int y = (q==NULL)? 0: q->val;
+        while(p || q){ //still have next
+            int x = (p==NULL)? 0 : p->val; 
+            int y = (q==NULL)? 0 : q->val;
+
             int sum = x + y + carry;
             carry = sum / 10;
             node->next = new ListNode(sum % 10);
             node = node->next;
-
+            
             if(p) p = p->next;
             if(q) q = q->next;
         }
-
+       
         if(carry) node->next = new ListNode(1);
-
+        
         return dummy_head->next;
     }
 };
