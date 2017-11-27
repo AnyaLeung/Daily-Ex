@@ -39,16 +39,18 @@
       <file leaf-file-name="hairdressers_simulation.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hairdressers_simulation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="183" column="0" lean-forward="true" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+            <state relative-caret-position="406">
+              <caret line="185" column="32" lean-forward="false" selection-start-line="185" selection-start-column="32" selection-end-line="185" selection-end-column="32" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
                 <element signature="e#556#607#1" expanded="false" />
                 <element signature="e#802#1008#0" expanded="false" />
                 <element signature="e#1010#1496#0" expanded="false" />
-                <element signature="e#1875#3042#0" expanded="false" />
-                <element signature="e#3323#3423#0" expanded="false" />
-                <element signature="e#3592#4157#0" expanded="false" />
+                <element signature="e#1530#1671#0" expanded="false" />
+                <element signature="e#1695#1873#0" expanded="false" />
+                <element signature="e#1875#3424#0" expanded="false" />
+                <element signature="e#3426#4024#0" expanded="false" />
+                <element signature="e#4132#4899#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -57,8 +59,8 @@
       <file leaf-file-name="hairdresser.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hairdresser.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+            <state relative-caret-position="195">
+              <caret line="13" column="4" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -71,6 +73,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>Load</find>
+      <find>status</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -89,7 +92,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="783" />
+    <option name="width" value="764" />
     <option name="height" value="900" />
   </component>
   <component name="ProjectView">
@@ -322,15 +325,15 @@
       <option name="presentableId" value="Default" />
       <updated>1511256835123</updated>
       <workItem from="1511256838112" duration="11096000" />
-      <workItem from="1511761218417" duration="2444000" />
+      <workItem from="1511761218417" duration="7302000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13540000" />
+    <option name="totallyTimeSpent" value="18398000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="783" height="900" extended-state="6" />
+    <frame x="0" y="0" width="764" height="900" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24010217" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -361,7 +364,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="13" />
+      <option name="time" value="16" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -383,9 +386,11 @@
             <element signature="e#556#607#1" expanded="false" />
             <element signature="e#802#1008#0" expanded="false" />
             <element signature="e#1010#1496#0" expanded="false" />
-            <element signature="e#1875#3042#0" expanded="false" />
-            <element signature="e#3323#3423#0" expanded="false" />
-            <element signature="e#3592#4157#0" expanded="false" />
+            <element signature="e#1530#1671#0" expanded="false" />
+            <element signature="e#1695#1873#0" expanded="false" />
+            <element signature="e#1875#3424#0" expanded="false" />
+            <element signature="e#3426#4024#0" expanded="false" />
+            <element signature="e#4132#4899#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -413,8 +418,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hairdresser.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+        <state relative-caret-position="195">
+          <caret line="13" column="4" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -423,16 +428,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hairdressers_simulation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="183" column="0" lean-forward="true" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+        <state relative-caret-position="406">
+          <caret line="185" column="32" lean-forward="false" selection-start-line="185" selection-start-column="32" selection-end-line="185" selection-end-column="32" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
             <element signature="e#556#607#1" expanded="false" />
             <element signature="e#802#1008#0" expanded="false" />
             <element signature="e#1010#1496#0" expanded="false" />
-            <element signature="e#1875#3042#0" expanded="false" />
-            <element signature="e#3323#3423#0" expanded="false" />
-            <element signature="e#3592#4157#0" expanded="false" />
+            <element signature="e#1530#1671#0" expanded="false" />
+            <element signature="e#1695#1873#0" expanded="false" />
+            <element signature="e#1875#3424#0" expanded="false" />
+            <element signature="e#3426#4024#0" expanded="false" />
+            <element signature="e#4132#4899#0" expanded="false" />
           </folding>
         </state>
       </provider>
