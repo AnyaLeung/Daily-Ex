@@ -9,7 +9,8 @@ typedef struct{
 } Customer;
 
 typedef struct{
+    int no;
     int ba_level; 
-    bool status; 
+    bool status;
     //false-->available, true-->occupied now
 } Barber;

@@ -30,21 +30,3 @@ queue
 hairdresser.h
 /Users/anyaliang/Documents/Daily-Ex/Data_structure_Kurs/hairdressers_simulation/hairdresser.h
 
-/Users/anyaliang/Documents/Daily-Ex/Data_structure_Kurs/hairdressers_simulation/test.cpp
-iostream
--
-stdlib.h
--
-unistd.h
--
-fstream
--
-cstdlib
--
-ctime
--
-queue
--
-hairdresser.h
-/Users/anyaliang/Documents/Daily-Ex/Data_structure_Kurs/hairdressers_simulation/hairdresser.h
-
