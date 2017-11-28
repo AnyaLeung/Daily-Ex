@@ -5,11 +5,22 @@
 #include <cstdlib>
 #include <ctime>
 #include <queue>
-#include "hairdresser.h"
 
 #define MAXSIZE 20
 
 using namespace std;
+
+typedef struct{
+    int no;
+    int barber_wanted_level;
+} Customer;
+
+typedef struct{
+    int no;
+    int ba_level;
+    bool status;
+    //false-->available, true-->occupied now
+} Barber;
 
 //global variable
 int customer_id  = 0;
@@ -36,18 +47,17 @@ enum level{
 void Init_customer( Customer &cu, level wanted){
     cu.no = customer_id;
     cu.barber_wanted_level = wanted;
-
+    
     customer_id ++;
 } //init customer with level wanted
 
 int Generate_customer_amount(){
     srand(time(0));
     int cu_amount = rand() % (100 - 20) + 10;
-    cout << "The customers are coming..." << endl;
     cout << endl;
-
+    
     sleep(2);
-
+    
     return cu_amount;
 }
 
@@ -55,17 +65,17 @@ void Init_customer_list(Customer *cu_list, int cu_amount){
     Customer *p;
     p = cu_list;
     //p = new Customer[cu_amount];
-
+    
     for(int i=0; i<cu_amount; i++){
         level level_wanted;
         int lw = rand() % (3 - 0);
-
+        
         switch(lw){
             case 0: level_wanted = level_one; break;
             case 1: level_wanted = level_two; break;
             case 2: level_wanted = level_three; break;
         }
-
+        
         Init_customer(p[i], level_wanted);
     }
     cu_list++;
@@ -75,39 +85,35 @@ void Init_barber(Barber &ba, level ba_level){
     ba.ba_level =  ba_level;
     ba.status = false;
     ba.no = barber_id;
-    ba.income = 0;
-
+    
     barber_id ++;
 } //init with par level
 
 void Init_barber_list(Barber *ba_list, level ba_level, int amount){
     Barber *p;
     p = ba_list;
-
+    
     for(int i=0; i<amount; i++){
         Init_barber(p[i], ba_level);
     }
 }
 
-void Allo_to_ba(Customer cu, Barber* ba_list_level_one, Barber* ba_list_level_two, Barber* ba_list_level_three) {
+void Allo_to_ba(Customer cu) {
+    //cout << "The no." << customer_count << " customer wants " << cu.barber_wanted_level << " .";
+    cout << cu.barber_wanted_level << "  ";
+    //cout << endl;
+    
     switch (cu.barber_wanted_level) {
         case level_one :
             if (ba_1_free.empty()) { //not available
                 cout << "no " << cu.no + 1 << "waiting enqueue. " << endl;
                 cu_1_waiting.push(cu);
             } else {
-                if(cu_1_waiting.size()) {
-                    cout << "no " << cu.no + 1 << "waiting enqueue. " << endl;
-                    cu_1_waiting.push(cu);
-                }
-                else {
-                    cout << "serving" << cu.no + 1 << endl;
-                    Barber tmp;
-                    tmp = ba_1_free.front();
-                    ba_list_level_one[tmp.no].income += 90;
-                    ba_1_occupied.push(tmp);
-                    ba_1_free.pop();
-                }
+                cout << "serving" << cu.no + 1 << endl;
+                Barber tmp;
+                tmp = ba_1_free.front();
+                ba_1_occupied.push(tmp);
+                ba_1_free.pop();
             }
             break;
         case level_two :
@@ -115,18 +121,11 @@ void Allo_to_ba(Customer cu, Barber* ba_list_level_one, Barber* ba_list_level_tw
                 cout << "no " << cu.no + 1 << "waiting enqueue. " << endl;
                 cu_2_waiting.push(cu);
             } else {
-                if(cu_2_waiting.size()) {
-                    cu_2_waiting.push(cu);
-                    cout << "no " << cu.no + 1 << "waiting enqueue. " << endl;
-                }
-                else{
-                    cout << "serving" << cu.no + 1 << endl;
-                    Barber tmp;
-                    tmp = ba_2_free.front();
-                    ba_list_level_two[tmp.no-2].income += 60;
-                    ba_2_occupied.push(tmp);
-                    ba_2_free.pop();
-                }
+                cout << "serving" << cu.no + 1 << endl;
+                Barber tmp;
+                tmp = ba_2_free.front();
+                ba_2_occupied.push(tmp);
+                ba_2_free.pop();
             }
             break;
         case level_three :
@@ -134,49 +133,34 @@ void Allo_to_ba(Customer cu, Barber* ba_list_level_one, Barber* ba_list_level_tw
                 cout << "no " << cu.no + 1 << "waiting enqueue. " << endl;
                 cu_3_waiting.push(cu);
             } else {
-                if (cu_3_waiting.size()) {
-                    cu_3_waiting.push(cu);
-                    cout << "no " << cu.no + 1 << "waiting enqueue. " << endl;
-                }
-                else {
-                    cout << "serving" << cu.no + 1 << endl;
-                    Barber tmp;
-                    tmp = ba_3_free.front();
-                    ba_list_level_three[tmp.no-5].income += 30;
-                    ba_3_occupied.push(tmp);
-                    ba_3_free.pop();
-                }
+                cout << "serving" << cu.no + 1 << endl;
+                Barber tmp;
+                tmp = ba_3_free.front();
+                ba_3_occupied.push(tmp);
+                ba_3_free.pop();
+                break;
             }
-            break;
-
     }
 }
 
-void Load_cu(Customer* cu_list, Barber* ba_list_level_one, Barber* ba_list_level_two, Barber* ba_list_level_three){
-    //sleep(1);
-
-    while(customer_count<customer_id) {
-        if(ba_1_free.empty()){
-            Barber tmp;
-            tmp = ba_1_occupied.front();
-            ba_1_free.push(tmp);
+void Load_cu(Customer* cu_list){
+    sleep(1);
+    
+    while(customer_count<=customer_id) {
+        if(!ba_1_occupied.empty()){
+            ba_1_free.push(ba_1_occupied.front());
             ba_1_occupied.pop();
         } //serving
-        if(ba_2_free.empty()){
-            Barber tmp;
-            tmp = ba_2_occupied.front();
-            ba_2_free.push(tmp);
+        if(!ba_2_occupied.empty()){
+            ba_2_free.push(ba_1_occupied.front());
             ba_2_occupied.pop();
         } //serving
-        if(ba_3_free.empty()){
-            Barber tmp;
-            tmp = ba_3_occupied.front();
-            ba_3_free.push(tmp);
+        if(!ba_3_occupied.empty()){
+            ba_3_free.push(ba_1_occupied.front());
             ba_3_occupied.pop();
         } //serving
-
-        //sleep(1);
-        Allo_to_ba(cu_list[customer_count], ba_list_level_one, ba_list_level_two, ba_list_level_three);
+        
+        Allo_to_ba(cu_list[customer_count]);
         customer_count++; //richtig
     }
 }
@@ -190,40 +174,35 @@ void Welcome_and_open(){
     system("clear");
     cout << endl;
     cout << endl;
+    cout << "                                                **************************************************************" << endl;
+    cout << "                                                *                                                            *" << endl;
+    cout << "                                                *               Welcome to our barbershop!                   *"<< endl;
+    cout << "                                                *                                                            *" << endl;
+    cout << "                                                **************************************************************" << endl;
     cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << "              **************************************************************" << endl;
-    cout << "              *                                                            *" << endl;
-    cout << "              *               Welcome to our barbershop!                   *"<< endl;
-    cout << "              *                                                            *" << endl;
-    cout << "              **************************************************************" << endl;
-    cout << endl;
-    cout << "                          Press [S] to start business: " ;
+    cout << "                                                               Press [S] to start business: " ;
     cin >> open;
     if(open=='S'){
         system("clear");
     }
     cout << endl;
     cout << endl;
+    cout << "                                                **************************************************************" << endl;
+    cout << "                                                *                                                            *" << endl;
+    cout << "                                                *    Our barbershop is running now, customers are coming...  *" << endl;
+    cout << "                                                *                                                            *" << endl;
+    cout << "                                                **************************************************************" << endl;
     cout << endl;
-    cout << "              **************************************************************" << endl;
-    cout << "              *                                                            *" << endl;
-    cout << "              *   Our barbershop is running now, customers are coming...   *" << endl;
-    cout << "              *                                                            *" << endl;
-    cout << "              **************************************************************" << endl;
-    cout << endl;
-
+    
 }//改的好看一点。。
 
 int main(void){
     int cu_amount = Generate_customer_amount();
-    cout << cu_amount << endl;
     Customer *cu_list;
     cu_list = new Customer[cu_amount];
     Init_customer_list(cu_list, cu_amount);
     //init customer list with level wanted
-
+    
     Barber *ba_list_level_one;
     ba_list_level_one = new Barber[2]; //no: 0 1
     Barber *ba_list_level_two;
@@ -234,16 +213,15 @@ int main(void){
     Init_barber_list(ba_list_level_two, level_two, 3);
     Init_barber_list(ba_list_level_three, level_three, 5);
     //init barber of different level, set all status to false
-
+    
     for(int i=0; i<2; i++) ba_1_free.push(ba_list_level_one[i]);
     for(int i=0; i<3; i++) ba_2_free.push(ba_list_level_two[i]);
     for(int i=0; i<5; i++) ba_3_free.push(ba_list_level_three[i]);
     // init queue, push all ba to free queue
-
-    //Welcome_and_open();
-    Load_cu(cu_list, ba_list_level_one, ba_list_level_two, ba_list_level_three);
-
-    cout << "here: " << ba_list_level_one[0].income << " ";
-
+    
+    Welcome_and_open();
+    Load_cu(cu_list);
+    
     return 0;
 }
+

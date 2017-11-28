@@ -12,5 +12,6 @@ typedef struct{
     int no;
     int ba_level; 
     bool status;
-    //false-->available, true-->occupied now
+    int income;
+    //30 60 90
 } Barber;
