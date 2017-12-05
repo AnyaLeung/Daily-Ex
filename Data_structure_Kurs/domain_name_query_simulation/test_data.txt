@@ -1,0 +1,13 @@
+www.baidu.com 180.97.33.107
+www.google.com 31.13.72.54
+www.zhihu.com 47.95.51.100
+www.weibo.com 180.149.134.142
+www.github.com 192.30.255.112
+www.ccnu.edu.cn 183.168.162.3
+www.nasa.gov 68.142.107.84
+www.beijing.gov.cn 117.21.219.88
+www.shanghai.gov.cn 61.129.65.58
+www.sina.com.cn 202.102.94.124
+one.ccnu.edu.cn 183.168.162.3
+lib.ccnu.edu.cn 183.168.162.3
+cs.ccnu.edu.cn 183.168.162.3
