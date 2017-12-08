@@ -16,6 +16,6 @@ void InitNode(string da, PtrToNode le, PtrToNode ri){
 
 int main(void){
 
-    //system("open url");
+    system("open http://www.baidu.com");
     return 0;
 }
