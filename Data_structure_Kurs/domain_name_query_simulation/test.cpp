@@ -1,4 +1,4 @@
-class treeNode{
+#class treeNode{
     public:
         treeNode():data(NULL),left(NULL),right(NULL)
     {

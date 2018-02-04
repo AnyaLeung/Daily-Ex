@@ -1,1 +1,4 @@
-CMakeLists.txt not found in /Users/anyaliang/Documents/Daily-Ex/Data_structure_Kurs/domain_name_query_simulation
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/anyaliang/Documents/Daily-Ex/Data_structure_Kurs/domain_name_query_simulation
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/anyaliang/Documents/Daily-Ex/Data_structure_Kurs/domain_name_query_simulation/cmake-build-debug

@@ -10,6 +10,5 @@ public:
     string longestPalindrome(string s) {
         string s1;
         s1 = reverse(s.start(), s.end());
-        cout << s1;
     }
 };
