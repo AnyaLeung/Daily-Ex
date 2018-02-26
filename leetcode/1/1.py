@@ -1,3 +1,4 @@
+# time complexity: O(n)
 class Solution:
     def twoSum(self, nums, target):
         """
