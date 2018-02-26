@@ -1,3 +1,4 @@
+//O(n^2)
 int* twoSum(int* nums, int numsSize, int target) {
     int i = 0, j = 0;
     int* res;
