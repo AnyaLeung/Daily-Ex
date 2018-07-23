@@ -1,36 +1,20 @@
-string findLongestPalindrome(string &s)  
-{  
-    const int length=s.size();  //length--string length
-    int maxlength=0; //lp length 
-    int start; //start position
-    bool P[50][50]={false};  ///set all to false
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int slen = s.length();
+        string res; 
+        bool DP[1000][1000] = {false};
 
-    for(int i=0;i<length;i++)//初始化准备  
-    {  
-        P[i][i]=true;  //every single char is 
-
-        if(i<length-1 && s.at(i)==s.at(i+1))  //s[i] == s[i+1]
-        {  
-            P[i][i+1]=true;  
-            start=i;  
-            maxlength=2;  
-        }  
-    }  
-
-    for(int len=3;len<length;len++)//子串长度  
-        for(int i=0;i<=length-len;i++)//子串起始地址  
-        {  
-            int j=i+len-1;//子串结束地址  
-            if(P[i+1][j-1]&&s.at(i)==s.at(j))  
-            {  
-                P[i][j]=true;  
-                maxlength=len;  
-                start=i;  
-            }  
-        }  
-
-    if(maxlength>=2)  
-        return s.substr(start,maxlength);  
-
-    return NULL;  
-}
+        for(int i=slen-1; i>-1; i--){
+            for(int j=i; j<n; j++){
+                if((j-i<3||DP[i+1][j-1]) && s[i]==s[j]){
+                    DP[i][j] = true;
+                    if(DP[i][j] && j+1-i>res.length()){
+                        res = s.substr(i, j+1-i);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
