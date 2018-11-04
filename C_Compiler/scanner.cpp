@@ -27,8 +27,7 @@ map <string, int> Kwords = {
 
 map <string, int> Ops = {
     {"=", 21}, {"+", 22}, {"-", 23}, {"*", 24}, 
-    {"/", 25}, {"(", 26}, {")", 27}, {"[", 28}, 
-    {"]", 29}, {"{", 30}, {"}", 31}, {",", 32}, 
+    {"/", 25}, {"(", 26}, {")", 27}, {"[", 28}, {"]", 29}, {"{", 30}, {"}", 31}, {",", 32}, 
     {":", 33}, {";", 34}, {">", 35}, {"<", 36}, 
     {">=", 37}, {"<=", 38}, {"==", 39}, {"!=", 40},
 };
@@ -50,8 +49,8 @@ int p_index = 0;
 /* function prototype */
 void EmptyPtoken(void); 
 void strmncpy(int m, int n);
-void WsIgnorance();
-bool IsDelimiter();
+void WsIgnorance(void);
+bool IsDelimiter(void);
 bool Strcmp(map <string, int> M, char* S);
 void SeperatePauseInput(void);
 bool IsLetter(void);
@@ -76,8 +75,7 @@ int main(void){
 }
 /* main func end */
 
-/* func declaration */
-void EmptyPtoken(void){
+/* func declaration */ void EmptyPtoken(void){
     for(int i=0; i<256; i++){
         p_token[i] = ' ';
     }
@@ -149,11 +147,11 @@ void SeperatePauseInput(void){
 bool IsLetter(void){
     return ((p_token[p_index]>='a'&&p_token[p_index]<='z')
             || (p_token[p_index]>='A'&&p_token[p_index]<='Z'));
-} //ok
+} 
 
 bool IsDigit(void){
     return (p_token[p_index]>='0' && p_token[p_index]<='9');
-} //ok
+}
 
 bool IsKword(void){
     if(Strcmp(Kwords, p_token)){ //retrieve all keys and compare with p_token
@@ -237,8 +235,9 @@ void MatchToken(void){
         cout << "(20, " << p_token << ") ";
         return ;
     }
-    else{
-        cout << "(-1, ERROR!) ";
+    if(p_token[p_index]=='\0'){
+        return ;
     }
+    cout << "(-1, ERROR!) ";
 }
 /* function declaration end*/
