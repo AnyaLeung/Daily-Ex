@@ -44,6 +44,7 @@ int s_count = 0;
 int p_start = 0;
 char p_token[255] = "";
 int p_index = 0;
+int pcode = -1;
 /* global variables end */
 
 /* function prototype */
@@ -60,6 +61,10 @@ bool IsOps(void);
 bool IsID(void);
 bool IsNum(void);
 void MatchToken(void);
+bool One_parser(void);
+bool Two_parser(void);
+void GetNextToken(void);
+bool StatementSequence(void);
 /* function prototype end */
 
 /* main func */
@@ -68,8 +73,7 @@ int main(void){
     scanf("%[^#]s", input);
 
     while(input[input_count]!='\0'){
-        SeperatePauseInput(); //divide into words
-        MatchToken();
+        One_parser();
     }
     return 0;
 }
@@ -106,6 +110,7 @@ bool Strcmp(map <string, int> M, char* S){
     auto search = M.find(p_str);
     if(search!=M.end()){
         cout << "(" << search->second << ", " << search->first << ") ";
+        pcode = search->second; //for parsing
         return true;
     }
     else{
@@ -220,6 +225,85 @@ bool IsNum(void){
     return true; 
 }
 
+bool One_parser(void){
+    GetNextToken();
+    if(pcode==1){ //starting token is "main"
+        GetNextToken();
+        if(pcode==26){ //next token is '('
+            GetNextToken();
+            if(pcode==27){ //next token is ')'
+                if(Two_parser()){
+                    return true;
+                } 
+                else{
+                    cout << "error" << endl;
+                    return false;
+                }
+            }
+            else{
+                cout << "error" << endl;;
+                return false;
+            }
+        }       
+        else{
+            cout << "error" << endl;
+            return false;
+        }
+    }
+    else{
+        cout << "error" << endl;
+        return false;
+    }
+    cout << "FICK DICH" << endl;
+    return true;
+} //ok
+
+bool Two_parser(void){
+   GetNextToken();
+   if(pcode==30){ // next token is '{'
+
+       GetNextToken();
+       if(StatementSequence()){ //statement sequence is true
+           GetNextToken();
+           if(pcode==31){ // next token is '}'
+                return true;
+           }
+           else{
+               return false;
+           }
+       }
+       else{
+           cout << "error" << endl;
+           return false;
+       }
+   }
+   else{
+       cout << "error" << endl;
+       return false;
+   }
+   return true;
+} //ok
+
+bool StatementSequence(void){
+    GetNextToken();
+    if(Statement()){
+        GetNextToken();
+        if(ty)
+    }
+    else{
+        cout << "error" << endl;
+        return false;
+    }
+    return true;
+}
+*/
+
+void GetNextToken(){
+    pcode = -1;
+    SeperatePauseInput();
+    MatchToken();
+}
+
 void MatchToken(void){
     strmncpy(p_start, s_count-1);
     if(IsKword()){
@@ -230,9 +314,12 @@ void MatchToken(void){
     }
     if(IsID()){
         cout << "(10, \"" << p_token << "\") ";
-        return ; }
+        pcode = 10;
+        return ; 
+    }
     if(IsNum()){
         cout << "(20, " << p_token << ") ";
+        pcode = 20;
         return ;
     }
     if(p_token[p_index]=='\0'){
