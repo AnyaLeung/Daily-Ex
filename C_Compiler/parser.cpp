@@ -64,6 +64,7 @@ void MatchToken(void);
 bool One_parser(void);
 bool Two_parser(void);
 void GetNextToken(void);
+void IsEnd(void);
 bool StatementSequence(void);
 /* function prototype end */
 
@@ -72,9 +73,7 @@ int main(void){
     cout << "Enter your program(end with #):";
     scanf("%[^#]s", input);
 
-    while(input[input_count]!='\0'){
-        One_parser();
-    }
+    One_parser();
     return 0;
 }
 /* main func end */
@@ -84,6 +83,11 @@ int main(void){
         p_token[i] = ' ';
     }
 }
+
+void IsEnd(void){
+    return (input[input_count]=='\0');
+}
+
 void strmncpy(int m, int n){
     EmptyPtoken();
     int count = 0;
@@ -287,8 +291,27 @@ bool Two_parser(void){
 bool StatementSequence(void){
     GetNextToken();
     if(Statement()){
+        //?????乱了乱了
+        if(IsEnd()){
+
+            cout << "End here!" << endl;
+            return true;
+        }
+        else{
+            GetNextToken();
+
+        }
         GetNextToken();
-        if(ty)
+        if(pcode==34){ // token is ';'
+            GetNextToken();
+           if(pcode==30){  //token is '{'
+               GetNextToken();
+
+           }
+        else{
+            cout << "error" << endl;
+            return false;
+        }
     }
     else{
         cout << "error" << endl;
@@ -296,7 +319,6 @@ bool StatementSequence(void){
     }
     return true;
 }
-*/
 
 void GetNextToken(){
     pcode = -1;
