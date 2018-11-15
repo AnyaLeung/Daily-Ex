@@ -72,6 +72,7 @@ bool ConditionState(void);
 bool LoopState(void);
 bool Expression(void);
 bool Term(void);
+bool Factor(void);
 /* function prototype end */
 
 /* main func */
@@ -366,10 +367,10 @@ bool Statement(void){
 }
 
 bool AssignValueState(void){
-    cout << "p2:" << p_token << endl;
+    //cout << "p2:" << p_token << endl;
     if(pcode==10){ //token is ID
         GetNextToken();
-        cout << "p3:" << p_token << endl;
+        cout << "p3:" << p_token << " ";
         if(pcode==21){ //token is '='
             if(Expression()){
                 return true;
@@ -392,15 +393,15 @@ bool AssignValueState(void){
 }
 
 bool Expression(void){
-    cout << "p4:" << p_token << endl;
     if(Term()){
         GetNextToken();
-        cout << "p4:" << p_token << endl;
+        cout << "p4:" << p_token << " ";
         if(pcode==22 || pcode==23){ //token is '+' or '-'
             if(Term()){
                 return true;
             }
         }
+        // !!! if(结束了返回上一层，回退)
     }
     else{
         cout << "error11" << endl;
@@ -410,9 +411,36 @@ bool Expression(void){
 }
 
 bool Term(void){
+    if(Factor()){
+        GetNextToken();
+        cout << "p5:" << p_token << " ";
+        if(pcode==24 || pcode==25){ //token is '*' or '/'
+            if(Factor()){
+                return true;
+            }
+            else{
+                cout << "error 19" << endl;
+            }
+        }
+        else{
+            cout << "error 18 " << endl;
+        }
+        //if only factor , goback ???!!!
+    }
+    else{
+        cout << "error 17" << endl;
+        return false;
+    }
+    return false;
+}
+
+bool Factor(void){
     GetNextToken();
-    cout << "p5:" << p_token << endl;
-    if(pcode==10){
+    cout << "p7:" << p_token << "  ";
+    if(pcode==10 || pcode==20){
+       return true; 
+    }
+    if(Expression()){
         return true;
     }
     return false;
