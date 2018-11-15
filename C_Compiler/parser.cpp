@@ -64,9 +64,14 @@ void MatchToken(void);
 bool One_parser(void);
 bool Two_parser(void);
 void GetNextToken(void);
-bool IsEnd(void);
+//bool IsEnd(void);
 bool StatementSequence(void);
 bool Statement(void);
+bool AssignValueState(void);
+bool ConditionState(void);
+bool LoopState(void);
+bool Expression(void);
+bool Term(void);
 /* function prototype end */
 
 /* main func */
@@ -75,6 +80,7 @@ int main(void){
     scanf("%[^#]s", input);
 
     One_parser();
+
     return 0;
 }
 /* main func end */
@@ -85,10 +91,12 @@ int main(void){
     }
 }
 
+/*
 bool IsEnd(void){
     //cout << "p_token: " << p_token[p_index] << endl;
     return (p_token[p_index+1]=='\0');
 }
+*/
 
 void strmncpy(int m, int n){
     EmptyPtoken();
@@ -239,7 +247,7 @@ bool One_parser(void){
             GetNextToken();
             if(pcode==27){ //next token is ')'
                 if(Two_parser()){
-                    cout << "right" << endl;
+                    cout << endl << "right" << endl;
                     return true;
                 } 
                 else{
@@ -261,13 +269,12 @@ bool One_parser(void){
         cout << "error" << endl;
         return false;
     }
-    return true;
+    return false;
 } //ok
 
 bool Two_parser(void){
    GetNextToken();
    if(pcode==30){ // next token is '{'
-
        GetNextToken();
        if(StatementSequence()){ //statement sequence is true
            return true;
@@ -281,12 +288,10 @@ bool Two_parser(void){
        cout << "error" << endl;
        return false;
    }
-   return true;
+   return false;
 } //ok
 
 bool StatementSequence(void){
-    //GetNextToken();
-
     if(Statement()){ //first token is statement
         GetNextToken();
         if(pcode==34){ //token is ';'
@@ -297,10 +302,10 @@ bool StatementSequence(void){
                     return true;
                 }
                 else{
-                    cout << "error7" << endl;
+                    cout << "error8" << endl;
                     return false;
                 }
-            }
+            } //finish parsing with ID and assign statement
             if(Statement()){
                 GetNextToken();
                 if(pcode==34){ //token is ';'
@@ -311,38 +316,120 @@ bool StatementSequence(void){
                             return true;
                         }
                         else{
-                            cout << "error8" << endl;
+                            cout << "error2" << endl;
                             return false;
                         }
                     }
                     else{
-                        cout << "error 6" << endl;
+                        cout << "error3" << endl;
                         return false;
                     }
                 }
 
                 else{
-                    cout << "error5" << endl;
+                    cout << "pwrong:" << p_token << endl;
+                    cout << "error4" << endl;
                     return false;
                 }
             }
             else{
-                cout << "error4" << endl;
+                cout << "error5" << endl;
                 return false;
             }
         }
         else{
-            cout << "error3" << endl;
+            cout << "error6" << endl;
             return false;
         }
     }
     else{ 
-        cout << "error1" << endl;
+        cout << "error7" << endl;
         return false;
     }
+    return false;
 }
 
 bool Statement(void){
+    if(AssignValueState()){
+        //cout << "ok1" << endl;
+        return true;
+    } 
+    /*
+    if(ConditionState()){
+        return true;
+    }
+    if(LoopState()){
+        return true;
+    }
+    */
+    return false;
+}
+
+bool AssignValueState(void){
+    cout << "p2:" << p_token << endl;
+    if(pcode==10){ //token is ID
+        GetNextToken();
+        cout << "p3:" << p_token << endl;
+        if(pcode==21){ //token is '='
+            if(Expression()){
+                return true;
+            }
+            else{
+                cout << "error 16 " << endl;
+                return false;
+            }
+        }
+        else{
+            cout << "error 15" << endl;
+            return false;
+        }
+    }
+    else{
+        cout << "error 10" << endl;
+        return false;
+    }
+    return false;
+}
+
+bool Expression(void){
+    cout << "p4:" << p_token << endl;
+    if(Term()){
+        GetNextToken();
+        cout << "p4:" << p_token << endl;
+        if(pcode==22 || pcode==23){ //token is '+' or '-'
+            if(Term()){
+                return true;
+            }
+        }
+    }
+    else{
+        cout << "error11" << endl;
+        return false;
+    }
+    return false;
+}
+
+bool Term(void){
+    GetNextToken();
+    cout << "p5:" << p_token << endl;
+    if(pcode==10){
+        return true;
+    }
+    return false;
+}
+
+bool ConditionState(void){
+    GetNextToken();
+    if(pcode==4){ //token is IF kword
+            ;        
+    }
+    else{
+        cout << "error1" << endl;
+    }
+    return true;
+}
+
+bool LoopState(){
     return true;
 }
 
