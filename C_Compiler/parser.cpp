@@ -64,7 +64,7 @@ void MatchToken(void);
 bool One_parser(void);
 bool Two_parser(void);
 void GetNextToken(void);
-void IsEnd(void);
+bool IsEnd(void);
 bool StatementSequence(void);
 /* function prototype end */
 
@@ -84,7 +84,7 @@ int main(void){
     }
 }
 
-void IsEnd(void){
+bool IsEnd(void){
     return (input[input_count]=='\0');
 }
 
@@ -258,7 +258,6 @@ bool One_parser(void){
         cout << "error" << endl;
         return false;
     }
-    cout << "FICK DICH" << endl;
     return true;
 } //ok
 
@@ -290,34 +289,46 @@ bool Two_parser(void){
 
 bool StatementSequence(void){
     GetNextToken();
-    if(Statement()){
-        //?????乱了乱了
-        if(IsEnd()){
-
-            cout << "End here!" << endl;
-            return true;
-        }
-        else{
-            GetNextToken();
-
-        }
+    if(1){
         GetNextToken();
-        if(pcode==34){ // token is ';'
-            GetNextToken();
-           if(pcode==30){  //token is '{'
-               GetNextToken();
 
-           }
+    //if(Statement){
+        GetNextToken();
+        if(pcode==34){
+            if(IsEnd()){
+                return true;
+            }
+            GetNextToken();
+            if(Statement()){
+                GetNextToken();
+                if(pcode==34){
+                    if(IsEnd()){
+                        return true;
+                    }
+                    else{
+                        cout << "error5" << endl;
+                        return false;
+                    }
+                }
+                else{
+                    cout << "error4" << endl;
+                    return false;
+                }
+            }
+            else{
+                cout << "error3" << endl;
+                return false;
+            }
+        }
         else{
-            cout << "error" << endl;
+            cout << "error2" << endl;
             return false;
         }
     }
     else{
-        cout << "error" << endl;
+        cout << "error1" << endl;
         return false;
     }
-    return true;
 }
 
 void GetNextToken(){
