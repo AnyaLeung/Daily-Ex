@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <stdlib.h> 
+#include <stdio.h> 
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -66,6 +66,7 @@ bool Two_parser(void);
 void GetNextToken(void);
 bool IsEnd(void);
 bool StatementSequence(void);
+bool Statement(void);
 /* function prototype end */
 
 /* main func */
@@ -85,7 +86,8 @@ int main(void){
 }
 
 bool IsEnd(void){
-    return (input[input_count]=='\0');
+    //cout << "p_token: " << p_token[p_index] << endl;
+    return (p_token[p_index+1]=='\0');
 }
 
 void strmncpy(int m, int n){
@@ -237,6 +239,7 @@ bool One_parser(void){
             GetNextToken();
             if(pcode==27){ //next token is ')'
                 if(Two_parser()){
+                    cout << "right" << endl;
                     return true;
                 } 
                 else{
@@ -267,13 +270,7 @@ bool Two_parser(void){
 
        GetNextToken();
        if(StatementSequence()){ //statement sequence is true
-           GetNextToken();
-           if(pcode==31){ // next token is '}'
-                return true;
-           }
-           else{
-               return false;
-           }
+           return true;
        }
        else{
            cout << "error" << endl;
@@ -288,47 +285,65 @@ bool Two_parser(void){
 } //ok
 
 bool StatementSequence(void){
-    GetNextToken();
-    if(1){
-        GetNextToken();
+    //GetNextToken();
 
-    //if(Statement){
+    if(Statement()){ //first token is statement
         GetNextToken();
-        if(pcode==34){
-            if(IsEnd()){
-                return true;
-            }
+        if(pcode==34){ //token is ';'
             GetNextToken();
+            if(pcode==31){ // is '}'
+                GetNextToken();
+                if(pcode==-1){
+                    return true;
+                }
+                else{
+                    cout << "error7" << endl;
+                    return false;
+                }
+            }
             if(Statement()){
                 GetNextToken();
-                if(pcode==34){
-                    if(IsEnd()){
-                        return true;
+                if(pcode==34){ //token is ';'
+                    GetNextToken();
+                    if(pcode==31){ //token is '}'
+                        GetNextToken();
+                        if(pcode==-1){
+                            return true;
+                        }
+                        else{
+                            cout << "error8" << endl;
+                            return false;
+                        }
                     }
                     else{
-                        cout << "error5" << endl;
+                        cout << "error 6" << endl;
                         return false;
                     }
                 }
+
                 else{
-                    cout << "error4" << endl;
+                    cout << "error5" << endl;
                     return false;
                 }
             }
             else{
-                cout << "error3" << endl;
+                cout << "error4" << endl;
                 return false;
             }
         }
         else{
-            cout << "error2" << endl;
+            cout << "error3" << endl;
             return false;
         }
     }
-    else{
+    else{ 
         cout << "error1" << endl;
         return false;
     }
+}
+
+bool Statement(void){
+    return true;
 }
 
 void GetNextToken(){
