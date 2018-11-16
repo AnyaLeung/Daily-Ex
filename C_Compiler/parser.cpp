@@ -45,6 +45,9 @@ int p_start = 0;
 char p_token[255] = "";
 int p_index = 0;
 int pcode = -1;
+int p_p_start = 0;
+int p_s_count = 0;
+int p_input_count = 0;
 /* global variables end */
 
 /* function prototype */
@@ -73,6 +76,7 @@ bool LoopState(void);
 bool Expression(void);
 bool Term(void);
 bool Factor(void);
+void Back2PreviosToken(void);
 /* function prototype end */
 
 /* main func */
@@ -86,7 +90,8 @@ int main(void){
 }
 /* main func end */
 
-/* func declaration */ void EmptyPtoken(void){
+/* func declaration */ 
+void EmptyPtoken(void){
     for(int i=0; i<256; i++){
         p_token[i] = ' ';
     }
@@ -136,6 +141,11 @@ bool Strcmp(map <string, int> M, char* S){
 
 void SeperatePauseInput(void){
     WsIgnorance();
+
+    p_p_start = p_start;
+    p_s_count = s_count;
+    p_input_count = input_count;
+
     p_start = s_count;
 
     while(!IsDelimiter()){
@@ -465,6 +475,12 @@ void GetNextToken(){
     pcode = -1;
     SeperatePauseInput();
     MatchToken();
+}
+
+void Back2PreviosToken(void){
+    p_start = p_p_start;
+    s_count = p_s_count;
+    input_count = p_input_count;
 }
 
 void MatchToken(void){
