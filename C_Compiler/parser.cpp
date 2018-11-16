@@ -76,7 +76,7 @@ bool LoopState(void);
 bool Expression(void);
 bool Term(void);
 bool Factor(void);
-void Back2PreviosToken(void);
+void Back2PreviousToken(void);
 /* function prototype end */
 
 /* main func */
@@ -286,9 +286,15 @@ bool One_parser(void){
 bool Two_parser(void){
    GetNextToken();
    if(pcode==30){ // next token is '{'
-       GetNextToken();
        if(StatementSequence()){ //statement sequence is true
-           return true;
+           GetNextToken();
+           if(pcode==31){ // is '}'
+                return true;
+           }
+           else{
+               cout << "error 40" << endl;
+               return false;
+           }
        }
        else{
            cout << "error" << endl;
@@ -306,55 +312,41 @@ bool StatementSequence(void){
     if(Statement()){ //first token is statement
         GetNextToken();
         if(pcode==34){ //token is ';'
-            GetNextToken();
-            if(pcode==31){ // is '}'
-                GetNextToken();
-                if(pcode==-1){
-                    return true;
-                }
-                else{
-                    cout << "error8" << endl;
-                    return false;
-                }
-            } //finish parsing with ID and assign statement
+            if(pcode==-1){
+                cout << "ok in statesequence and finish 1 sta" << endl;
+                return true;
+            }
             if(Statement()){
                 GetNextToken();
-                if(pcode==34){ //token is ';'
+                if(pcode==34){ //is ';'
                     GetNextToken();
-                    if(pcode==31){ //token is '}'
-                        GetNextToken();
-                        if(pcode==-1){
-                            return true;
-                        }
-                        else{
-                            cout << "error2" << endl;
-                            return false;
-                        }
+                    if(pcode==31){
+                        Back2PreviousToken();
+                        cout << "ok in statesequence and finish 2sta" << endl;
+                        return true;
                     }
                     else{
-                        cout << "error3" << endl;
+                        cout << "error 43" << endl;
                         return false;
                     }
                 }
-
                 else{
-                    cout << "pwrong:" << p_token << endl;
-                    cout << "error4" << endl;
+                    cout << "error 42" << endl;
                     return false;
                 }
             }
             else{
-                cout << "error5" << endl;
+                cout << "error 41" << endl;
                 return false;
             }
-        }
-        else{
-            cout << "error6" << endl;
-            return false;
+       }
+       else{
+           cout << "error 44" << endl;
+           return false;
         }
     }
-    else{ 
-        cout << "error7" << endl;
+    else{
+        cout << "error 45" << endl;
         return false;
     }
     return false;
@@ -362,13 +354,14 @@ bool StatementSequence(void){
 
 bool Statement(void){
     if(AssignValueState()){
-        //cout << "ok1" << endl;
         return true;
     } 
-    /*
+
     if(ConditionState()){
+        cout << "ok111" << endl;
         return true;
     }
+    /*
     if(LoopState()){
         return true;
     }
@@ -377,12 +370,13 @@ bool Statement(void){
 }
 
 bool AssignValueState(void){
-    //cout << "p2:" << p_token << endl;
+    GetNextToken();
     if(pcode==10){ //token is ID
         GetNextToken();
-        cout << "p3:" << p_token << " ";
         if(pcode==21){ //token is '='
+            cout << "p3:" << p_token << " ";
             if(Expression()){
+                cout << "ok1" << endl;
                 return true;
             }
             else{
@@ -407,16 +401,25 @@ bool Expression(void){
         GetNextToken();
         cout << "p4:" << p_token << " ";
         if(pcode==22 || pcode==23){ //token is '+' or '-'
+            cout << "ok6" << endl;
             if(Term()){
+                cout << "ok7" << endl;
                 return true;
             }
         }
-        // !!! if(结束了返回上一层，回退)
+        if(pcode==-1){ //is end
+            return true;
+        }
+        else{
+            cout << "error 30" << endl;
+            return false;
+        }
     }
     else{
         cout << "error11" << endl;
         return false;
     }
+    cout << "error 11" << endl;
     return false;
 }
 
@@ -424,18 +427,30 @@ bool Term(void){
     if(Factor()){
         GetNextToken();
         cout << "p5:" << p_token << " ";
+        if(pcode==34){ //is ';'
+            Back2PreviousToken();
+            cout << "ok3" << endl;
+            return true;
+        }
+        if(pcode==22 | pcode==23){ //token is '+' or '-'
+            Back2PreviousToken();
+            cout << "ok2" << endl;
+            return true;
+        }
         if(pcode==24 || pcode==25){ //token is '*' or '/'
             if(Factor()){
+                cout << "ok1" << endl;
                 return true;
             }
             else{
                 cout << "error 19" << endl;
+                return false;
             }
         }
         else{
             cout << "error 18 " << endl;
+            return false;
         }
-        //if only factor , goback ???!!!
     }
     else{
         cout << "error 17" << endl;
@@ -446,12 +461,16 @@ bool Term(void){
 
 bool Factor(void){
     GetNextToken();
-    cout << "p7:" << p_token << "  ";
-    if(pcode==10 || pcode==20){
-       return true; 
+    if(pcode==10 || pcode==20){ //ID or num 
+        cout << "p7:" << p_token << endl;
+        return true; 
     }
     if(Expression()){
         return true;
+    }
+    else{
+        cout << "fac error" << endl;
+        return false;
     }
     return false;
 }
@@ -477,7 +496,7 @@ void GetNextToken(){
     MatchToken();
 }
 
-void Back2PreviosToken(void){
+void Back2PreviousToken(void){
     p_start = p_p_start;
     s_count = p_s_count;
     input_count = p_input_count;
