@@ -1,3 +1,8 @@
+/*
+ * FUCK TEXTBOOK, 
+ * FUCK ALL CODES IN THIS BOOK
+ */
+
 #include <iostream>
 #include <string.h>
 #include <stdlib.h> 
@@ -8,18 +13,6 @@
 #include <iterator>
 
 using namespace std; 
-
-/*
- *  At first, use input array to save user's input, 
- *  then filter out all whitespaces, '\0', 
- *  and save the processed sentense into s_word array.
- *
- *  Then use s_word to generate each token,
- *  and match them with ID / NUMBER / KEYWORD / OPRATOR,
- *  and print the result.
- */
-
-//ducking textbook, fick u all
 
 /* global variables */
 map <string, int> Kwords = {
@@ -69,13 +62,12 @@ void MatchToken(void);
 bool One_parser(void);
 bool Two_parser(void);
 void GetNextToken(void);
-//bool IsEnd(void);
 bool StatementSequence(void);
 bool Statement(void);
 bool AssignValueState(void);
 bool ConditionState(void);
 bool LoopState(void);
-bool Expression(int npcode, int tpcode);
+bool Expression(int npcode);
 bool Term(int npcode);
 bool Factor(void);
 void Back2PreviousToken(void);
@@ -99,13 +91,6 @@ void EmptyPtoken(void){
         p_token[i] = ' ';
     }
 }
-
-/*
-bool IsEnd(void){
-    //cout << "p_token: " << p_token[p_index] << endl;
-    return (p_token[p_index+1]=='\0');
-}
-*/
 
 void strmncpy(int m, int n){
     EmptyPtoken();
@@ -255,14 +240,13 @@ bool IsNum(void){
 
 bool One_parser(void){
     GetNextToken();
-    if(pcode==1){ //starting token is "main"
+    if(pcode==1){ // is "main" kword
         GetNextToken();
-        if(pcode==26){ //next token is '('
+        if(pcode==26){ // is '('
             GetNextToken();
-            if(pcode==27){ //next token is ')'
+            if(pcode==27){ // is ')'
                 if(Two_parser()){
                     cout << "ok in parser one" << endl;
-                    cout << endl << "right" << endl;
                     return true;
                 } 
                 else{
@@ -285,11 +269,11 @@ bool One_parser(void){
         return false;
     }
     return false;
-} //ok
+}
 
 bool Two_parser(void){
    GetNextToken();
-   if(pcode==30){ // next token is '{'
+   if(pcode==30){ //is '{'
        if(StatementSequence()){ //statement sequence is true
            GetNextToken();
            if(pcode==31){ // is '}'
@@ -297,7 +281,7 @@ bool Two_parser(void){
                return true;
            }
            else{
-               cout << "error 40" << endl;
+               cout << "error" << endl;
                return false;
            }
        }
@@ -316,8 +300,8 @@ bool Two_parser(void){
 bool StatementSequence(void){
     if(Statement()){ 
         GetNextToken();
-        if(pcode==31){ //is '}'
-            Back2PreviousToken();
+        Back2PreviousToken();
+        if(pcode==31){ // is '}'
             cout << "ok in statesequence and finish 1 sta" << endl;
             return true;
         } 
@@ -360,7 +344,6 @@ bool Statement(void){
     if(pcode==4){
         Back2PreviousToken();
         if(ConditionState()){
-            cout <<  "jokj" << endl;
             return true;
         }
         else{
@@ -376,7 +359,6 @@ bool Statement(void){
     else
     }
     */
-    cout << "fick dich " << endl;
     return false;
 }
 
@@ -386,7 +368,16 @@ bool AssignValueState(void){
         GetNextToken();
         if(pcode==21){ //token is '='
             cout << "p3:" << p_token << " ";
-            if(Expression(34, 34)){ // end with ;
+            if(Expression(34)){ // end with ;
+                GetNextToken();
+                if(pcode==34){ //is ;
+                    cout << "Right parsing." << endl;
+                    return true;
+                }
+                else{
+                    cout << "error 15.5" << endl;
+                    return false;
+                }
                 cout << "ok1" << endl;
                 return true;
             }
@@ -407,13 +398,13 @@ bool AssignValueState(void){
     return false;
 }
 
-bool Expression(int npcode, int tpcode){
-    if(Term(tpcode)){
+bool Expression(int npcode){
+    if(Term(npcode)){
         GetNextToken();
         cout << "p4:" << p_token << " ";
         if(pcode==22 || pcode==23){ //token is '+' or '-'
             cout << "ok6" << endl;
-            if(Term(tpcode)){
+            if(Term(npcode)){
                 cout << "ok7" << endl;
                 return true;
             }
@@ -475,14 +466,14 @@ bool Term(int npcode){
 bool Factor(void){
     GetNextToken();
     if(pcode==10 || pcode==20){ //ID or num 
-        cout << "p7:" << p_token << endl;
+        //cout << "p7:" << p_token << endl;
         return true; 
     }
-    if(Expression(34, 34)){ //end with ;
+    if(Expression(34)){ //end with ;
         return true;
     }
     else{
-        cout << "fac error" << endl;
+        cout << "factory error" << endl;
         return false;
     }
     return false;
@@ -491,16 +482,12 @@ bool Factor(void){
 bool ConditionState(void){
     GetNextToken();
     if(pcode==4){ //is IF kword
-        //cout <<
-        cout << "cond1:" << p_token << endl;
         GetNextToken();
         if(pcode==26){ //is '('
-            cout << "oksk" << endl;
             if(Condition()){
                 GetNextToken();
                 if(pcode==27){ //is ')'
                    if(Two_parser()){
-                       cout << "ok two " << endl;
                        return true;
                    }
                    else{
@@ -530,12 +517,12 @@ bool ConditionState(void){
 }
 
 bool Condition(void){
-    if(Expression(35, 35) || Expression(36, 36) || Expression(37, 37)
-        || Expression(38, 38) || Expression(39, 39) || Expression(40, 40)){ 
+    if(Expression(35) || Expression(36) || Expression(37)
+        || Expression(38) || Expression(39) || Expression(40)){ 
         //end with logical ops)
         GetNextToken();
         if(pcode>34 && pcode<41){ // is '>''<''>=''<=''==''!='
-            if(Expression(27, 27)){ //end with )
+            if(Expression(27)){ //end with )
                 cout << "okok" << endl;
                 return true;
             }
