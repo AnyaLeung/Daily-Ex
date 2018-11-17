@@ -46,32 +46,32 @@ int p_input_count = 0;
 /* global variables end */
 
 /* function prototype */
-void EmptyPtoken(void); 
-void strmncpy(int m, int n);
-void WsIgnorance(void);
-bool IsDelimiter(void);
-bool Strcmp(map <string, int> M, char* S);
-void SeperatePauseInput(void);
-bool IsLetter(void);
-bool IsDigit(void);
-bool IsKword(void);
-bool IsOps(void);
 bool IsID(void);
 bool IsNum(void);
+bool IsOps(void);
+bool Factor(void);
+bool IsKword(void);
+bool IsDigit(void);
+bool IsLetter(void);
+bool LoopState(void);
+bool Statement(void);
+bool Condition(void);
+bool Term(int npcode);
 void MatchToken(void);
 bool One_parser(void);
 bool Two_parser(void);
+void EmptyPtoken(void); 
+void WsIgnorance(void);
+bool IsDelimiter(void);
 void GetNextToken(void);
-bool StatementSequence(void);
-bool Statement(void);
-bool AssignValueState(void);
-bool ConditionState(void);
-bool LoopState(void);
 bool Expression(int npcode);
-bool Term(int npcode);
-bool Factor(void);
+void strmncpy(int m, int n);
+bool AssignValueState(void);
+bool StatementSequence(void);
+void SeperatePauseInput(void);
 void Back2PreviousToken(void);
-bool Condition(void);
+bool ConditionStateNLoopState(void);
+bool Strcmp(map <string, int> M, char* S);
 /* function prototype end */
 
 /* main func */
@@ -80,7 +80,6 @@ int main(void){
     scanf("%[^#]s", input);
 
     One_parser();
-
     return 0;
 }
 /* main func end */
@@ -117,7 +116,7 @@ bool Strcmp(map <string, int> M, char* S){
 
     auto search = M.find(p_str);
     if(search!=M.end()){
-        cout << "(" << search->second << ", " << search->first << ") ";
+        //cout << "(" << search->second << ", " << search->first << ") ";
         pcode = search->second; //for parsing
         return true;
     }
@@ -246,26 +245,26 @@ bool One_parser(void){
             GetNextToken();
             if(pcode==27){ // is ')'
                 if(Two_parser()){
-                    cout << "ok in parser one" << endl;
+                    cout << endl << "Right parsing." << endl;
                     return true;
                 } 
                 else{
-                    cout << "error" << endl;
+                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
             }
             else{
-                cout << "error" << endl;;
+                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }       
         else{
-            cout << "error" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "error" << endl;
+        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -277,53 +276,50 @@ bool Two_parser(void){
        if(StatementSequence()){ //statement sequence is true
            GetNextToken();
            if(pcode==31){ // is '}'
-               cout << "ok in Two_parser" << endl;
                return true;
            }
            else{
-               cout << "error" << endl;
+               cout << "Error in token:" << p_token << endl;
                return false;
            }
        }
        else{
-           cout << "error" << endl;
+            cout << "Error in token:" << p_token << endl;
            return false;
        }
    }
    else{
-       cout << "error" << endl;
+       cout << "Error in token:" << p_token << endl;
        return false;
    }
    return false;
-} //ok
+}
 
 bool StatementSequence(void){
     if(Statement()){ 
         GetNextToken();
         Back2PreviousToken();
         if(pcode==31){ // is '}'
-            cout << "ok in statesequence and finish 1 sta" << endl;
             return true;
         } 
         if(Statement()){
             GetNextToken();
             if(pcode==31){ // is '}'
                 Back2PreviousToken();
-                cout << "ok in statesequence and finish 2sta" << endl;
                 return true;
             }
             else{
-                cout << "error 43" << endl;
+                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "error 42" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "error 41" << endl;
+            cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -337,28 +333,20 @@ bool Statement(void){
             return true;
         }
         else{
-            cout << "error 100" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
-    if(pcode==4){
+    if(pcode==4 || pcode==7){
         Back2PreviousToken();
-        if(ConditionState()){
+        if(ConditionStateNLoopState()){
             return true;
         }
         else{
-            cout << "error 101" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
-    /*
-    if(pcode==7){
-        Back2PreviousToken();
-        if()
-    }
-    else
-    }
-    */
     return false;
 }
 
@@ -367,32 +355,29 @@ bool AssignValueState(void){
     if(pcode==10){ //token is ID
         GetNextToken();
         if(pcode==21){ //token is '='
-            cout << "p3:" << p_token << " ";
             if(Expression(34)){ // end with ;
                 GetNextToken();
                 if(pcode==34){ //is ;
-                    cout << "Right parsing." << endl;
                     return true;
                 }
                 else{
-                    cout << "error 15.5" << endl;
+                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
-                cout << "ok1" << endl;
                 return true;
             }
             else{
-                cout << "error 16 " << endl;
+            cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "error 15" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "error 10" << endl;
+        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -401,11 +386,8 @@ bool AssignValueState(void){
 bool Expression(int npcode){
     if(Term(npcode)){
         GetNextToken();
-        cout << "p4:" << p_token << " ";
         if(pcode==22 || pcode==23){ //token is '+' or '-'
-            cout << "ok6" << endl;
             if(Term(npcode)){
-                cout << "ok7" << endl;
                 return true;
             }
         }
@@ -414,50 +396,44 @@ bool Expression(int npcode){
             return true;
         }
         else{
-            cout << "error 30" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "error11" << endl;
+            cout << "Error in token:" << p_token << endl;
         return false;
     }
-    cout << "error 11" << endl;
     return false;
 }
 
-//npcode==34 ;
 bool Term(int npcode){
     if(Factor()){
         GetNextToken();
-        cout << "p5:" << p_token << " ";
         if(pcode==npcode){ //is ';'
             Back2PreviousToken();
-            cout << "ok3" << endl;
             return true;
         }
         if(pcode==22 | pcode==23){ //token is '+' or '-'
             Back2PreviousToken();
-            cout << "ok2" << endl;
             return true;
         }
         if(pcode==24 || pcode==25){ //token is '*' or '/'
             if(Factor()){
-                cout << "ok333" << endl;
                 return true;
             }
             else{
-                cout << "error 19" << endl;
+                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "error 18 " << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "error 17" << endl;
+        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -466,22 +442,21 @@ bool Term(int npcode){
 bool Factor(void){
     GetNextToken();
     if(pcode==10 || pcode==20){ //ID or num 
-        //cout << "p7:" << p_token << endl;
         return true; 
     }
     if(Expression(34)){ //end with ;
         return true;
     }
     else{
-        cout << "factory error" << endl;
+        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
 }
 
-bool ConditionState(void){
+bool ConditionStateNLoopState(void){
     GetNextToken();
-    if(pcode==4){ //is IF kword
+    if(pcode==4 || pcode==7){ //is IF kword
         GetNextToken();
         if(pcode==26){ //is '('
             if(Condition()){
@@ -491,29 +466,30 @@ bool ConditionState(void){
                        return true;
                    }
                    else{
-                       cout << "error 53" << endl;
+                       cout << "Error in token:" << p_token << endl;
                        return false;
                    }
                 }
                 else{
-                    cout << "error 52" << endl;
+                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
             }
             else{
-                cout << "error 51" << endl;
+                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "error 50" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "error1" << endl;
+        cout << "Error in token:" << p_token << endl;
+        return false;
     }
-    return true;
+    return false;
 }
 
 bool Condition(void){
@@ -523,24 +499,20 @@ bool Condition(void){
         GetNextToken();
         if(pcode>34 && pcode<41){ // is '>''<''>=''<=''==''!='
             if(Expression(27)){ //end with )
-                cout << "okok" << endl;
                 return true;
             }
             else{
-                cout << "error 56" << endl;
+                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "error 55" << endl;
+            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
+    cout << "Error in token:" << p_token << endl;
     return false;
-}
-
-bool LoopState(){
-    return true;
 }
 
 void GetNextToken(){
@@ -564,18 +536,19 @@ void MatchToken(void){
         return ;
     }
     if(IsID()){
-        cout << "(10, \"" << p_token << "\") ";
+        //cout << "(10, \"" << p_token << "\") ";
         pcode = 10;
         return ; 
     }
     if(IsNum()){
-        cout << "(20, " << p_token << ") ";
+        //cout << "(20, " << p_token << ") ";
         pcode = 20;
         return ;
     }
     if(p_token[p_index]=='\0'){
         return ;
     }
-    cout << "(-1, ERROR!) ";
+    cout << "Scanning error." << endl;
+    exit(0);
 }
-/* function declaration end*/
+/* function declaration end */
