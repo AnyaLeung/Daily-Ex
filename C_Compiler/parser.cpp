@@ -19,6 +19,8 @@ using namespace std;
  *  and print the result.
  */
 
+//ducking textbook, fick u all
+
 /* global variables */
 map <string, int> Kwords = {
     {"main", 1}, {"int", 2}, {"char", 3}, {"if", 4}, 
@@ -73,10 +75,11 @@ bool Statement(void);
 bool AssignValueState(void);
 bool ConditionState(void);
 bool LoopState(void);
-bool Expression(void);
-bool Term(void);
+bool Expression(int npcode, int tpcode);
+bool Term(int npcode);
 bool Factor(void);
 void Back2PreviousToken(void);
+bool Condition(void);
 /* function prototype end */
 
 /* main func */
@@ -258,6 +261,7 @@ bool One_parser(void){
             GetNextToken();
             if(pcode==27){ //next token is ')'
                 if(Two_parser()){
+                    cout << "ok in parser one" << endl;
                     cout << endl << "right" << endl;
                     return true;
                 } 
@@ -289,7 +293,8 @@ bool Two_parser(void){
        if(StatementSequence()){ //statement sequence is true
            GetNextToken();
            if(pcode==31){ // is '}'
-                return true;
+               cout << "ok in Two_parser" << endl;
+               return true;
            }
            else{
                cout << "error 40" << endl;
@@ -309,63 +314,69 @@ bool Two_parser(void){
 } //ok
 
 bool StatementSequence(void){
-    if(Statement()){ //first token is statement
+    if(Statement()){ 
         GetNextToken();
-        if(pcode==34){ //token is ';'
-            if(pcode==-1){
-                cout << "ok in statesequence and finish 1 sta" << endl;
+        if(pcode==31){ //is '}'
+            Back2PreviousToken();
+            cout << "ok in statesequence and finish 1 sta" << endl;
+            return true;
+        } 
+        if(Statement()){
+            GetNextToken();
+            if(pcode==31){ // is '}'
+                Back2PreviousToken();
+                cout << "ok in statesequence and finish 2sta" << endl;
                 return true;
             }
-            if(Statement()){
-                GetNextToken();
-                if(pcode==34){ //is ';'
-                    GetNextToken();
-                    if(pcode==31){
-                        Back2PreviousToken();
-                        cout << "ok in statesequence and finish 2sta" << endl;
-                        return true;
-                    }
-                    else{
-                        cout << "error 43" << endl;
-                        return false;
-                    }
-                }
-                else{
-                    cout << "error 42" << endl;
-                    return false;
-                }
-            }
             else{
-                cout << "error 41" << endl;
+                cout << "error 43" << endl;
                 return false;
             }
-       }
-       else{
-           cout << "error 44" << endl;
-           return false;
+        }
+        else{
+            cout << "error 42" << endl;
+            return false;
         }
     }
     else{
-        cout << "error 45" << endl;
+        cout << "error 41" << endl;
         return false;
     }
     return false;
 }
 
 bool Statement(void){
-    if(AssignValueState()){
-        return true;
-    } 
-
-    if(ConditionState()){
-        cout << "ok111" << endl;
-        return true;
+    GetNextToken();
+    if(pcode==10){ //ID
+        Back2PreviousToken();
+        if(AssignValueState()){
+            return true;
+        }
+        else{
+            cout << "error 100" << endl;
+            return false;
+        }
+    }
+    if(pcode==4){
+        Back2PreviousToken();
+        if(ConditionState()){
+            cout <<  "jokj" << endl;
+            return true;
+        }
+        else{
+            cout << "error 101" << endl;
+            return false;
+        }
     }
     /*
-    if(LoopState()){
-        return true;
+    if(pcode==7){
+        Back2PreviousToken();
+        if()
+    }
+    else
     }
     */
+    cout << "fick dich " << endl;
     return false;
 }
 
@@ -375,7 +386,7 @@ bool AssignValueState(void){
         GetNextToken();
         if(pcode==21){ //token is '='
             cout << "p3:" << p_token << " ";
-            if(Expression()){
+            if(Expression(34, 34)){ // end with ;
                 cout << "ok1" << endl;
                 return true;
             }
@@ -396,18 +407,19 @@ bool AssignValueState(void){
     return false;
 }
 
-bool Expression(void){
-    if(Term()){
+bool Expression(int npcode, int tpcode){
+    if(Term(tpcode)){
         GetNextToken();
         cout << "p4:" << p_token << " ";
         if(pcode==22 || pcode==23){ //token is '+' or '-'
             cout << "ok6" << endl;
-            if(Term()){
+            if(Term(tpcode)){
                 cout << "ok7" << endl;
                 return true;
             }
         }
-        if(pcode==-1){ //is end
+        if(pcode==npcode){ //is end
+            Back2PreviousToken();
             return true;
         }
         else{
@@ -423,11 +435,12 @@ bool Expression(void){
     return false;
 }
 
-bool Term(void){
+//npcode==34 ;
+bool Term(int npcode){
     if(Factor()){
         GetNextToken();
         cout << "p5:" << p_token << " ";
-        if(pcode==34){ //is ';'
+        if(pcode==npcode){ //is ';'
             Back2PreviousToken();
             cout << "ok3" << endl;
             return true;
@@ -439,7 +452,7 @@ bool Term(void){
         }
         if(pcode==24 || pcode==25){ //token is '*' or '/'
             if(Factor()){
-                cout << "ok1" << endl;
+                cout << "ok333" << endl;
                 return true;
             }
             else{
@@ -465,7 +478,7 @@ bool Factor(void){
         cout << "p7:" << p_token << endl;
         return true; 
     }
-    if(Expression()){
+    if(Expression(34, 34)){ //end with ;
         return true;
     }
     else{
@@ -477,13 +490,66 @@ bool Factor(void){
 
 bool ConditionState(void){
     GetNextToken();
-    if(pcode==4){ //token is IF kword
-            ;        
+    if(pcode==4){ //is IF kword
+        //cout <<
+        cout << "cond1:" << p_token << endl;
+        GetNextToken();
+        if(pcode==26){ //is '('
+            cout << "oksk" << endl;
+            if(Condition()){
+                GetNextToken();
+                if(pcode==27){ //is ')'
+                   if(Two_parser()){
+                       cout << "ok two " << endl;
+                       return true;
+                   }
+                   else{
+                       cout << "error 53" << endl;
+                       return false;
+                   }
+                }
+                else{
+                    cout << "error 52" << endl;
+                    return false;
+                }
+            }
+            else{
+                cout << "error 51" << endl;
+                return false;
+            }
+        }
+        else{
+            cout << "error 50" << endl;
+            return false;
+        }
     }
     else{
         cout << "error1" << endl;
     }
     return true;
+}
+
+bool Condition(void){
+    if(Expression(35, 35) || Expression(36, 36) || Expression(37, 37)
+        || Expression(38, 38) || Expression(39, 39) || Expression(40, 40)){ 
+        //end with logical ops)
+        GetNextToken();
+        if(pcode>34 && pcode<41){ // is '>''<''>=''<=''==''!='
+            if(Expression(27, 27)){ //end with )
+                cout << "okok" << endl;
+                return true;
+            }
+            else{
+                cout << "error 56" << endl;
+                return false;
+            }
+        }
+        else{
+            cout << "error 55" << endl;
+            return false;
+        }
+    }
+    return false;
 }
 
 bool LoopState(){
