@@ -3,6 +3,7 @@
  * FUCK ALL CODES IN THIS BOOK
  */
 
+// {} is 0-n closure edit it!
 #include <iostream>
 #include <string.h>
 #include <stdlib.h> 
