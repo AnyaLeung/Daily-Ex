@@ -38,20 +38,20 @@ bool operator<(const JOB& a, const JOB& b) {
 }
 
 void Init(void){
-    JOB tmp1(0, 800, 50, -1, false);
+    JOB tmp1(1, 800, 50, -1, false);
     job_list[0] = tmp1;
     present_time = job_list[0].enter_time;
-    JOB tmp2(1, 815, 30, -1, false);
+    JOB tmp2(2, 815, 30, -1, false);
     job_list[1] = tmp2;
-    JOB tmp3(2, 830, 25, -1, false);
+    JOB tmp3(3, 830, 25, -1, false);
     job_list[2] = tmp3;
-    JOB tmp4(3, 835, 20, -1, false);
+    JOB tmp4(4, 835, 20, -1, false);
     job_list[3] = tmp4;
-    JOB tmp5(4, 845, 15, -1, false);
+    JOB tmp5(5, 845, 15, -1, false);
     job_list[4] = tmp5;
-    JOB tmp6(5, 900, 10, -1, false);
+    JOB tmp6(6, 900, 10, -1, false);
     job_list[5] = tmp6;
-    JOB tmp7(6, 920, 5, -1, false);
+    JOB tmp7(7, 920, 5, -1, false);
     job_list[6] = tmp7;
 }
 
@@ -70,7 +70,7 @@ int TimeProcess(int time){
 }
 
 void PrintRes(int i){
-    cout << job_list[i].no + 1<< '\t' << job_list[i].enter_time << '\t'
+    cout << job_list[i].no << '\t' << job_list[i].enter_time << '\t'
         << job_list[i].duration << '\t' << job_list[i].sys_time << '\t'
         << endl;
 }
@@ -95,22 +95,6 @@ void FIFO(void){
     cout << endl;
 }
 
-void Print(priority_queue<JOB> a){
-    while(!a.empty()){
-        cout << a.top().no << " ";
-        a.pop();
-    }
-}
-
-bool JobFinish(){
-    for(int i=0; i<7; i++){
-        if(job_list[i].visited==false){
-            return false;
-        }
-    }
-    return true;
-}
-
 void SJFA(void){ //shortest job first algorithm
     priority_queue<JOB> waiting_q;
 
@@ -119,32 +103,38 @@ void SJFA(void){ //shortest job first algorithm
             if(job_list[i].enter_time<=present_time){
                 if(!job_list[i].visited){
                     waiting_q.push(job_list[i]);
-                    job_list[i].visited = true;
                 }
             } //push into queue
         }
 
         if(!waiting_q.empty()){ //q not null
-            int index = waiting_q.top().no;
-            job_list[index].sys_time = present_time; //begin exe
-            PrintRes(index);
-            present_time += job_list[index].duration;
+            waiting_q.top().sys_time = present_time; //begin exe
+            job_list[waiting_q.top().no].visited = true;
+            PrintRes(waiting_q.top().no); 
+            present_time += waiting_q.top().duration;
             present_time = TimeProcess(present_time); //exe end
-            waiting_q.pop();
+            waiting_q.pop(); //remove from waitin' q
         }
         else{
-            if(!JobFinish()){
-                priority_queue<JOB> next_queue;
-                for(int i=0; i<7; i++){
-                    if(!job_list[i].visited){
-                        next_queue.push(job_list[i]);
-                    }
+            priority_queue<JOB> next_queue;
+            for(int i=0; i<7; i++){
+                if(!job_list[i].visited){
+                    next_queue.push(job_list[i]);
                 }
-                present_time = next_queue.top().enter_time;
             }
-            else{
-                return ;
+            JOB next = next_queue.top();
+            present_time = next.enter_time;
+        }
+
+        // all processed and exit
+        bool all_visited = true;
+        for(int i=0; i<7; i++){
+            if(job_list[i].visited==false){
+                all_visited = false;
             }
+        }
+        if(all_visited){
+            return ;
         }
     }
 }
