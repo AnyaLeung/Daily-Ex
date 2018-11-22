@@ -376,24 +376,30 @@ bool AssignValueState(void){
 }
 
 bool Expression(int npcode){
+    int count = 0;
     if(Term(npcode)){
         GetNextToken();
-        while(pcode==22 || pcode==23){ //token is '+' or '-'
-            if(Term(npcode)){
-                return true;
-            }
-        }
         if(pcode==npcode){ //is end
             Back2PreviousToken();
             return true;
-        }
-        else{
-            cout << "Error in token:" << p_token << endl;
-            return false;
-        }
+        } // only one term 
+        while(pcode==22 || pcode==23){ //token is '+' or '-'
+            if(Term(npcode)){
+                ;
+            }
+            else{
+                cout << "Error in token:" << p_token << endl;
+                return false;
+            }
+            GetNextToken();
+            if(pcode==npcode){ // is end
+                Back2PreviousToken();
+                return true;
+            }
+        } //many terms
     }
     else{
-            cout << "Error in token:" << p_token << endl;
+        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
