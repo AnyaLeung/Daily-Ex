@@ -297,32 +297,23 @@ bool Two_parser(void){
 }
 
 bool StatementSequence(void){
-    if(Statement()){ 
+    if(Statement()){
         GetNextToken();
         Back2PreviousToken();
-        if(pcode==31){ // is '}'
-            return true;
-        } 
-        if(Statement()){
+        while(pcode==10){ // aint '}'
+            Statement();
             GetNextToken();
+            Back2PreviousToken();
             if(pcode==31){ // is '}'
-                Back2PreviousToken();
                 return true;
             }
-            else{
-                cout << "Error in token:" << p_token << endl;
-                return false;
-            }
-        }
-        else{
-            cout << "Error in token:" << p_token << endl;
-            return false;
         }
     }
     else{
-            cout << "Error in token:" << p_token << endl;
+        cout << "Error in token:" << p_token << endl;
         return false;
     }
+    cout << "Error in token:" << p_token << endl;
     return false;
 }
 
@@ -387,7 +378,7 @@ bool AssignValueState(void){
 bool Expression(int npcode){
     if(Term(npcode)){
         GetNextToken();
-        if(pcode==22 || pcode==23){ //token is '+' or '-'
+        while(pcode==22 || pcode==23){ //token is '+' or '-'
             if(Term(npcode)){
                 return true;
             }
@@ -445,13 +436,30 @@ bool Factor(void){
     if(pcode==10 || pcode==20){ //ID or num 
         return true; 
     }
-    if(Expression(34)){ //end with ;
-        return true;
-    }
     else{
-        cout << "Error in token:" << p_token << endl;
-        return false;
+        GetNextToken();
+        if(pcode==26){
+            if(Expression(34)){ //end with ;
+                GetNextToken();
+                if(pcode==27){
+                    return true;
+                }
+                else{
+                    cout << "Error in token:" << p_token << endl;
+                    return false;
+                }
+            }
+            else{
+                cout << "Error in token:" << p_token << endl;
+                return false;
+            }
+        }
+        else{
+            cout << "Error in token:" << p_token << endl;
+            return false;
+        }
     }
+    cout << "Error in token:" << p_token << endl;
     return false;
 }
 
