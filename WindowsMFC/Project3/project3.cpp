@@ -19,15 +19,15 @@ RECT rect;
 int x;
 int y;
 POINT pt;
-POINT array[10000];//存储点的坐标
+POINT arr[10000];//存储点的坐标
 
 static int flag = 0;
+static int fflag = 0;
 
-int index = 0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR szCmdLine, int iCmdShow)
 {
-	static TCHAR szAppName[] = TEXT("5-4");
+	static TCHAR szAppName[] = TEXT("5-4 Project");
 	HWND         hwnd;
 	MSG          msg;
 	WNDCLASS     wndclass;
@@ -76,7 +76,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-
 	case WM_CREATE:
 		SetTimer(hwnd, 1, 100, NULL);
 		break;
@@ -87,47 +86,54 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_MOUSEMOVE:
 	{
-		if (wParam&MK_LBUTTON) { //press left button
+		if (wParam&MK_LBUTTON) { //press left button & cursor move
 			hdc = BeginPaint(hwnd, &ps);//获取设备环境指针
 			if (counter < 10000)
 			{
 				GetCursorPos(&pt);
 				ScreenToClient(hwnd, &pt);
-				array[counter].x = pt.x;
-				array[counter].y = pt.y;
-				//printf("x: %d, y: %d \n", pt.x, pt.y); //right
+				arr[counter].x = pt.x;
+				arr[counter].y = pt.y;
 				counter++;
-			}
+			} //save points into arr
 		}
 		break;
 	}
-	case WM_LBUTTONUP:
+	case WM_LBUTTONUP: //cursor up
 	{
 		flag = 0;
+		fflag = 1;
 		break;
 	}
-	case WM_LBUTTONDOWN:
+	case WM_LBUTTONDOWN: //cursor down, all set to white
+	{//cursor down
 		flag = 1;
-		if (flag == 1) {
-			for (int i = 0; i < counter; i++) {
-				array[i].x = 0;
-				array[i].y = 0;
-				SetPixel(hdc, array[i].x, array[i].y, RGB(255, 255, 255));
-			}
-			counter = 0;
-			flag = 0;
+		fflag = 0;
+		for (int i = 0; i < counter; i++) {
+			arr[i].x = 0;
+			arr[i].y = 0;
+			SetPixel(hdc, arr[i].x, arr[i].y, RGB(255, 255, 255));
 		}
 
+		counter = 0;
+		flag = 0;
+		}
+	
 		break;
 	case WM_PAINT:
-		if (flag == 0)
+		if (flag==0) //finish buttondown & arr not empty
 		{
 			hdc = BeginPaint(hwnd, &ps);
 			GetClientRect(hwnd, &rect);
 			for (int i = 0; i < counter - 1; i++) {
-				MoveToEx(hdc, array[i].x, array[i].y, NULL);
-				LineTo(hdc, array[i + 1].x, array[i + 1].y);
-				SetPixel(hdc, array[i].x, array[i].y, RGB(0, 0, 0));
+				SetPixel(hdc, arr[i].x, arr[i].y, RGB(0, 0, 0));
+			}
+			
+			for (int i = 0; i < counter - 1; i++) {
+				if (fflag) {
+					MoveToEx(hdc, arr[i].x, arr[i].y, NULL);
+					LineTo(hdc, arr[i + 1].x, arr[i + 1].y);
+				}
 			}
 		}
 		break;
@@ -141,4 +147,3 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 }
-
