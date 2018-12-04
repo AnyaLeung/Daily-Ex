@@ -19,11 +19,9 @@ class PROCESS{
         int prority;
         int end_time;
         bool visited;
-        //int waiting;
-        //bool printed;
-        //double iRR;
+        int remaining_time;
+        bool executed;
 
-    //public:
         PROCESS(int n, int e, int d, int p);
 };
 
@@ -36,8 +34,8 @@ PROCESS::PROCESS(int n, int e, int d, int p){
     waiting = 0;
     prority = p;
     visited = false;
-    //iRR = -1;
-    //printed = false;
+    remaining_time = duration;
+    executed = false;
 }
 
 vector<PROCESS> process_list;
@@ -106,6 +104,13 @@ bool JobFinish(){
     return true;
 }
 
+int GetTimeInterval(int t1, int t2){
+    if((t1-t2)<60){
+        return t1 - t2;
+    }
+    return t1 - t2 - 40;
+}
+
 void FIFO(void){
     cout << '\t' << "FIFO ALGORITHM" << '\t' << endl;
     cout <<  "pid" << '\t' << "enter" << '\t' << "prori" 
@@ -126,7 +131,7 @@ void FIFO(void){
 
 void PBS(void){ //prority based scheduling
     cout << endl;
-    cout << '\t' << "SJF ALGORITHM" << '\t' << endl;
+    cout << '\t' << "PBS ALGORITHM" << '\t' << endl;
     cout <<  "pid" << '\t' << "enter" << '\t' << "prori"
          << '\t' << "dura" << '\t' << "sys" 
          << '\t' << "end" << endl;
@@ -138,7 +143,7 @@ void PBS(void){ //prority based scheduling
                 if(!process_list[i].visited){
                     waiting_q.push(process_list[i]);
                     process_list[i].visited = true;
-                    process_list[i].waiting = present_time - process_list[i].enter_time;
+                    process_list[i].waiting = GetTimeInterval(present_time, process_list[i].enter_time);
                 }
             } //push into queue
         }
@@ -166,44 +171,50 @@ void PBS(void){ //prority based scheduling
     }
 }
 
-void SJFA(void){ //shortest job first algorithm
+void NextRound(void){
+    present_time += 1;
+}
+
+void RR(void){ //Round-Robin
+    //supposed every time slice is 1 min 
     cout << endl;
-    cout << '\t' << "SJF ALGORITHM" << '\t' << endl;
-    cout <<  "pid" << '\t' << "enter" << '\t' << "dura" 
-         << '\t' << "sys" << '\t' << "end" << endl;
-    priority_queue<PROCESS> waiting_q;
+    cout << '\t' << "RR ALGORITHM" << '\t' << endl;
+    cout <<  "pid" << '\t' << "enter" << '\t' << "prori"
+         << '\t' << "dura" << '\t' << "sys" 
+         << '\t' << "end" << endl;
+    int count = 0;
+    queue<PROCESS> waiting_q;
 
     while(true){
         for(int i=0; i<7; i++){
             if(process_list[i].enter_time<=present_time){
+                //cout << "p:" << present_time;
+                //cout << " " << i << " " << endl;
                 if(!process_list[i].visited){
                     waiting_q.push(process_list[i]);
                     process_list[i].visited = true;
-                    process_list[i].waiting = present_time - process_list[i].enter_time;
+                    process_list[i].waiting = GetTimeInterval(present_time, process_list[i].enter_time);
                 }
             } //push into queue
         }
-
-        if(!waiting_q.empty()){ //q not null
-            int index = waiting_q.top().no;
-            process_list[index].sys_time = present_time; //begin exe
-            present_time += process_list[index].duration;
-            present_time = TimeProcess(present_time); //exe end
-            process_list[index].end_time = present_time;
-            PrintRes(index);
-            waiting_q.pop();
-        }
-        else{
-            if(!JobFinish()){
-                priority_queue<PROCESS> next_queue;
-                for(int i=0; i<7; i++){
-                    if(!process_list[i].visited){
-                        next_queue.push(process_list[i]);
-                    }
-                }
-                present_time = next_queue.top().enter_time;
+        if(!waiting_q.empty()){
+            NextRound();
+            int index = waiting_q.front().no;
+            process_list[index].sys_time = present_time;
+            process_list[index].remaining_time -= 1;
+            if(process_list[index].remaining_time==0){
+                process_list[index].end_time = present_time;
+                PrintRes(index);
+                waiting_q.pop();
+                count ++;
             }
             else{
+                waiting_q.pop();
+                waiting_q.push(process_list[index]);
+            }
+        }
+        else{
+            if(count==7){
                 cout << endl;
                 return ;
             }
@@ -211,68 +222,79 @@ void SJFA(void){ //shortest job first algorithm
     }
 }
 
-/*
-int CalculateHRRIndex(void){
-   int max_index = -1;
-   double maxRR = 0.0;
-
-   for(int i=0; i<7; i++){
-       if(process_list[i].visited==true && process_list[i].printed==false){
-            if(process_list[i].iRR>maxRR ){
-                max_index = i;
-                maxRR = process_list[i].iRR;
-            }
-       }
-   }
-   return max_index;
-}
-
-int GetTimeInterval(int t1, int t2){
-    if((t1-t2)<60){
-        return t1 - t2;
-    }
-    return t1 - t2 - 40;
-}
-
-void HRRN(void){ //highest response ratio next algorithm
+void HSA(void){ //hierarchical scheduling
     cout << endl;
-    cout << '\t' << "HRRN ALGORITHM" << '\t' << endl;
-    cout <<  "pid" << '\t' << "enter" << '\t' << "dura" 
-         << '\t' << "sys" << '\t' << "end" << endl;
+    cout << '\t' << "HSA ALGORITHM" << '\t' << endl;
+    cout <<  "pid" << '\t' << "enter" << '\t' << "prori"
+        << '\t' << "dura" << '\t' << "sys" 
+        << '\t' << "end" << endl;
+    queue<PROCESS> first_level; //highest precedence, least time, 10 time slice
+    queue<PROCESS> second_level; //15 time slice
     int count = 0;
-
-    //exe job 0
-    process_list[0].sys_time = present_time;
-    present_time += process_list[0].duration;
-    process_list[0].visited = true;
-    process_list[0].end_time = present_time;
-    PrintRes(0);
+    int first_level_count = 0, second_level_count = 0;
 
     while(true){
-        for(int i=1; i<7; i++){
+        for(int i=0; i<7; i++){
             if(process_list[i].enter_time<=present_time){
-                if(!process_list[i].printed){
+                if(!process_list[i].visited){
+                    first_level.push(process_list[i]); //put into queue end
                     process_list[i].visited = true;
                     process_list[i].waiting = GetTimeInterval(present_time, process_list[i].enter_time);
-                    process_list[i].iRR = (double)(process_list[i].waiting) / (double)(process_list[i].duration) + 1;
                 }
             }
         }
-        if(count<7){
-            int index = CalculateHRRIndex(); //get HRR's index
-            process_list[index].sys_time = present_time; //begin exe
-            present_time += process_list[index].duration;
-            present_time = TimeProcess(present_time); //exe end
-            process_list[index].end_time = present_time;
-            PrintRes(index);
-            process_list[index].printed = true;
-        }
 
-        count ++;
-        if(count==6) return ;
+        if(!first_level.empty()){
+            NextRound();
+            int index = first_level.front().no;
+            process_list[index].sys_time = present_time;
+            process_list[index].remaining_time -= 1;
+            first_level_count++;
+            if(process_list[index].remaining_time==0){
+                process_list[index].end_time = present_time;
+                PrintRes(index);
+                first_level.pop();
+                count ++;
+            }
+            else{
+                if(first_level_count>=15){
+                    while(!first_level.empty()){
+                        int i = first_level.front().no;
+                        first_level.pop();
+                        second_level.push(process_list[index]);
+                    }
+                }
+                else{
+                    first_level.pop();
+                    first_level.push(process_list[index]);
+                }
+            }
+        }
+        if(!second_level.empty()){
+            NextRound();
+            int index = second_level.front().no;
+            process_list[index].sys_time = present_time;
+            process_list[index].remaining_time -= 1;
+            if(process_list[index].remaining_time==0){
+                process_list[index].end_time = present_time;
+                PrintRes(index);
+                second_level.pop();
+                count ++; 
+            }
+            else{
+                second_level.pop();
+                second_level.push(process_list[index]);
+            }
+        }
+        else{
+            if(count==7){
+                cout << endl;
+                return ;
+            }
+        }
     }
 }
- function definitions end */
+/* function definitions end */
 
 int main(void){
     process_list.reserve(7);
@@ -283,9 +305,10 @@ int main(void){
     Init();
     PBS();
 
-    /*
     Init();
-    HRRN();
-    */
+    RR();
+     
+    Init();
+    HSA();
     return 0;
 }
