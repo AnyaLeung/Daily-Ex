@@ -1,6 +1,6 @@
 import abc
 
-# TV product
+# TV product, interface
 class TV(object):
     __metaclass__ = abc.ABCMeta
 
@@ -8,12 +8,16 @@ class TV(object):
     def play(self):
         return
 
-# HaierTV product
+    @abc.abstractclassmethod
+    def clone(self):
+        return
+
+# HaierTV product, implements TV
 class HaierTV(TV):
     instance = None
     cloned_instance = None
 
-    def __init__(self):
+    def __init__(self): # as constructed fuction
         raise SyntaxError("Can't generate instance, use get_instance method please")
 
     @staticmethod
@@ -26,13 +30,14 @@ class HaierTV(TV):
     def play(self):
         print('HaierTV is playing...')
 
+    # Python's '=' copys reference, which is equal to Java's shallow copy
     @staticmethod
     def clone(object):
         if HaierTV.cloned_instance is None:
             HaierTV.cloned_instance = object
         return HaierTV.cloned_instance
 
-# HisenseTV product
+# HisenseTV product, implement TV
 class HisenseTV(TV):
     instance = None
     cloned_instance = None;
@@ -56,7 +61,7 @@ class HisenseTV(TV):
             HisenseTV.cloned_instance = object
         return HisenseTV.cloned_instance
 
-# TV factory
+# TV factory, interface
 class TVFactory(object):
     __metaclass__ = abc.ABCMeta
 
@@ -64,12 +69,12 @@ class TVFactory(object):
     def produceTV(self):
         return
 
-# HaierTV factory
+# HaierTV factory, implements TVFactory
 class HaierTVFactory(TVFactory):
     def produceTV(self):
         return HaierTV.get_instance()
 
-#HisenseTV factory
+#HisenseTV factory, implements TVFactory
 class HisenseTVFactory(TVFactory):
     def produceTV(self):
         return HisenseTV.get_instance()
