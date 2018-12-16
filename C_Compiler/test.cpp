@@ -399,7 +399,6 @@ bool Expression(int npcode){
     }
     else{
         //cout << "Error in token:" << p_token << endl;
-        cout << "wrong in " << npcode << endl;
         return false;
     }
     return false;
@@ -508,29 +507,15 @@ bool ConditionStateNLoopState(void){
 }
 
 bool Condition(void){
-    if(Expression(35)){
-        GetNextToken();
         if(Expression(27)){ //end with )
             return true;
         }
-        else{
-    //        cout << "Error in token:" << p_token << endl;
-            return false;
-        }
-    }
-        cout << p_token << endl;
-    if(Expression(36)){
-        cout << "here" << endl;
-        GetNextToken();
-
-        if(Expression(27)){ //end with )
-            return true;
-        }
-        else{
-            cout << "Error in token:" << p_token << endl;
-            return false;
-        }
-    }
+      }
+      else{
+          Back2PreviousToken();
+      }
+    //cout << "Error in token:" << p_token << endl;
+    return false;
 }
 
 void GetNextToken(){
