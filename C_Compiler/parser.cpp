@@ -375,6 +375,12 @@ bool AssignValueState(void){
 bool Expression(int npcode){
     if(Term(npcode)){
         GetNextToken();
+        if(npcode==-1){
+            if(pcode>34 && pcode<41){ //is end
+                Back2PreviousToken();
+                return true;
+            }
+        }
         if(pcode==npcode){ //is end
             Back2PreviousToken();
             return true;
@@ -408,6 +414,12 @@ bool Expression(int npcode){
 bool Term(int npcode){
     if(Factor()){
         GetNextToken();
+        if(npcode==-1){
+            if(pcode>34 && pcode<41){ //is end
+                Back2PreviousToken();
+                return true;
+            }
+        }
         if(pcode==npcode){ //is ';'
             Back2PreviousToken();
             return true;
@@ -508,21 +520,8 @@ bool ConditionStateNLoopState(void){
 }
 
 bool Condition(void){
-    if(Expression(35)){
+    if(Expression(-1)){
         GetNextToken();
-        if(Expression(27)){ //end with )
-            return true;
-        }
-        else{
-    //        cout << "Error in token:" << p_token << endl;
-            return false;
-        }
-    }
-        cout << p_token << endl;
-    if(Expression(36)){
-        cout << "here" << endl;
-        GetNextToken();
-
         if(Expression(27)){ //end with )
             return true;
         }
@@ -531,6 +530,7 @@ bool Condition(void){
             return false;
         }
     }
+    return false;
 }
 
 void GetNextToken(){
