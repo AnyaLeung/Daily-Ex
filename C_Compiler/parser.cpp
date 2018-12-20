@@ -74,7 +74,9 @@ int main(void){
     cout << "Enter your program(end with #):";
     scanf("%[^#]s", input);
 
-    One_parser();
+    if(!One_parser()){
+        cout << "Error!";
+    };
     return 0;
 }
 /* main func end */
@@ -244,22 +246,18 @@ bool One_parser(void){
                     return true;
                 } 
                 else{
-                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
             }
             else{
-                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }       
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -274,17 +272,14 @@ bool Two_parser(void){
                return true;
            }
            else{
-               cout << "Error in token:" << p_token << endl;
                return false;
            }
        }
        else{
-            cout << "Error in token:" << p_token << endl;
            return false;
        }
    }
    else{
-       cout << "Error in token:" << p_token << endl;
        return false;
    }
    return false;
@@ -307,10 +302,8 @@ bool StatementSequence(void){
         }
     }
     else{
-        cout << "Error in token:" << p_token << endl;
         return false;
     }
-    cout << "Error in token:" << p_token << endl;
     return false;
 }
 
@@ -322,7 +315,6 @@ bool Statement(void){
             return true;
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
@@ -332,7 +324,6 @@ bool Statement(void){
             return true;
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
@@ -350,23 +341,19 @@ bool AssignValueState(void){
                     return true;
                 }
                 else{
-                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
                 return true;
             }
             else{
-            cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -394,18 +381,14 @@ bool Expression(int npcode){
                 return true;
             }
             else{
-                //cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            //cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        //cout << "Error in token:" << p_token << endl;
-        cout << "wrong in " << npcode << endl;
         return false;
     }
     return false;
@@ -433,17 +416,14 @@ bool Term(int npcode){
                 return true;
             }
             else{
-                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -463,21 +443,17 @@ bool Factor(void){
                     return true;
                 }
                 else{
-                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
             }
             else{
-                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
-    cout << "Error in token:" << p_token << endl;
     return false;
 }
 
@@ -493,27 +469,22 @@ bool ConditionStateNLoopState(void){
                        return true;
                    }
                    else{
-                       cout << "Error in token:" << p_token << endl;
                        return false;
                    }
                 }
                 else{
-                    cout << "Error in token:" << p_token << endl;
                     return false;
                 }
             }
             else{
-                cout << "Error in token:" << p_token << endl;
                 return false;
             }
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
     else{
-        cout << "Error in token:" << p_token << endl;
         return false;
     }
     return false;
@@ -526,7 +497,6 @@ bool Condition(void){
             return true;
         }
         else{
-            cout << "Error in token:" << p_token << endl;
             return false;
         }
     }
@@ -566,7 +536,7 @@ void MatchToken(void){
     if(p_token[p_index]=='\0'){
         return ;
     }
-    cout << "Scanning error." << endl;
+    //cout << "Scanning error." << endl;
     exit(0);
 }
 /* function declaration end */
