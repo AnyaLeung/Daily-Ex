@@ -74,9 +74,7 @@ int main(void){
     return 0;
 }
 /* main func end */
-
-/* func declaration */ void EmptyPtoken(void){
-    for(int i=0; i<256; i++){
+/* func declaration */ void EmptyPtoken(void){ for(int i=0; i<256; i++){
         p_token[i] = ' ';
     }
 }
